@@ -57,7 +57,7 @@ export default async function HomePage() {
           {/* Next deadline countdown card */}
           <div className="rise self-center">
             {soonest ? (
-              <div className="rounded-2xl border border-ink/10 bg-cream-light/80 p-6 shadow-[0_16px_48px_-8px_rgba(0,0,0,0.18)] backdrop-blur sm:p-8">
+              <div className="rounded-xl border border-hairline bg-canvas p-6 shadow-layered sm:p-8">
                 <div className="flex items-center justify-between">
                   <span className="eyebrow">{t.nextUp}</span>
                   <span className="badge badge-orange">
@@ -82,7 +82,7 @@ export default async function HomePage() {
                 </Link>
               </div>
             ) : (
-              <div className="rounded-2xl border border-ink/10 bg-cream-light/80 p-8 text-ink">
+              <div className="rounded-xl border border-hairline bg-canvas p-8 text-ink">
                 <p className="font-display text-2xl">{t.noUpcoming}</p>
                 <Link href="/conferences" className="mt-3 inline-block text-link">
                   {t.manageConferences}
@@ -143,6 +143,31 @@ export default async function HomePage() {
               {featured.length === 0 && <p className="text-sm text-steel">{t.noPubs}</p>}
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ============ RESEARCH AREAS (chromatic category cards) ============ */}
+      <section className="container-core pb-20 md:pb-24">
+        <div className="eyebrow mb-3">{t.areasEyebrow}</div>
+        <h2 className="font-display text-4xl text-ink">{t.areasHeading}</h2>
+        <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {[
+            { cls: "cat-purple", n: "01", title: "Computer Vision", desc: "Visual recognition, representation learning and detection." },
+            { cls: "cat-blue", n: "02", title: "Interactive Video Retrieval", desc: "Real-time, multimodal search over large video archives." },
+            { cls: "cat-pink", n: "03", title: "Multimodal Learning", desc: "Vision–language fusion across text, speech and objects." },
+            { cls: "cat-orange", n: "04", title: "Scene Text & OCR", desc: "Reading text in images and broadcast video." },
+            { cls: "cat-green", n: "05", title: "Multimedia Indexing", desc: "Scalable indexing and content-based retrieval." },
+          ].map((c) => (
+            <div key={c.n} className={`category-card ${c.cls}`}>
+              <div className="text-sm font-semibold opacity-80">{c.n}</div>
+              <div>
+                <div className="font-display text-2xl" style={{ color: "inherit" }}>
+                  {c.title}
+                </div>
+                <p className="mt-2 text-sm opacity-90">{c.desc}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 

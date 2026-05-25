@@ -29,7 +29,7 @@ export default async function ConferencesPage() {
           <p className="mt-4 max-w-2xl text-lg text-white/90">{t.confSubtitle}</p>
 
           {soonest && (
-            <div className="mt-10 inline-block rounded-2xl bg-cream-light/95 p-6 shadow-[0_16px_48px_-8px_rgba(0,0,0,0.3)] sm:p-8">
+            <div className="mt-10 inline-block rounded-xl border border-hairline bg-canvas p-6 shadow-layered sm:p-8">
               <div className="flex items-center gap-2">
                 <span className="badge badge-orange">
                   {soonest.kind === "deadline" ? t.nextDeadline : t.nextConference}

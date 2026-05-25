@@ -1,23 +1,17 @@
 import type { Metadata } from "next";
-import { Inter, Fraunces, JetBrains_Mono } from "next/font/google";
+import { Inter, Inconsolata } from "next/font/google";
 import "./globals.css";
 
+// Single family across the system (substitute for WF Visual Sans).
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
 });
 
-// Fraunces — a free editorial near-serif standing in for PP Editorial Old
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
-  subsets: ["latin"],
-  display: "swap",
-  axes: ["opsz"],
-});
-
-const jbMono = JetBrains_Mono({
-  variable: "--font-jbmono",
+// Inconsolata — documented mono fallback for technical captions.
+const inconsolata = Inconsolata({
+  variable: "--font-inconsolata",
   subsets: ["latin"],
   display: "swap",
 });
@@ -37,7 +31,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${fraunces.variable} ${jbMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${inconsolata.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-canvas text-ink">{children}</body>
     </html>

@@ -19,7 +19,7 @@ export default async function AdminLogin({
       <form
         method="post"
         action={`${BASE_PATH}/api/auth/login`}
-        className="w-full max-w-sm rounded-2xl border border-ink/10 bg-cream-light/95 p-8 shadow-[0_16px_48px_-8px_rgba(0,0,0,0.2)]"
+        className="w-full max-w-sm rounded-xl border border-hairline bg-canvas p-8 shadow-layered"
       >
         <Link href="/" className="font-display text-2xl text-ink">
           CORE Lab<span className="text-primary">_</span>
