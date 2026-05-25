@@ -1,18 +1,16 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { LOCALES, type Locale } from "@/lib/dict";
+import { BASE_PATH } from "@/lib/basePath";
 
 const LABEL: Record<Locale, string> = { en: "EN", vi: "VI" };
 
 export default function LanguageSwitcher({ locale }: { locale: Locale }) {
-  function setLocale(l: Locale) {
-    if (l === locale) return;
-    // path=/ so it applies across the whole site (incl. the base path).
-    document.cookie = `locale=${l}; path=/; max-age=31536000; samesite=lax`;
-    // Hard reload so server components re-render with the new cookie
-    // (router.refresh can serve a cached tree and miss the just-set cookie).
-    window.location.reload();
-  }
+  const pathname = usePathname() || "/";
+  // Server route sets the cookie + 303 redirects back to the current page.
+  const href = (l: Locale) =>
+    `${BASE_PATH}/api/locale?l=${l}&to=${encodeURIComponent(pathname)}`;
 
   return (
     <div
@@ -21,16 +19,16 @@ export default function LanguageSwitcher({ locale }: { locale: Locale }) {
       aria-label="Language"
     >
       {LOCALES.map((l) => (
-        <button
+        <a
           key={l}
-          onClick={() => setLocale(l)}
-          aria-pressed={l === locale}
-          className={`px-2.5 py-1 transition-colors ${
+          href={href(l)}
+          aria-current={l === locale ? "true" : undefined}
+          className={`cursor-pointer px-2.5 py-1 transition-colors ${
             l === locale ? "bg-ink text-on-dark" : "text-steel hover:text-ink"
           }`}
         >
           {LABEL[l]}
-        </button>
+        </a>
       ))}
     </div>
   );
