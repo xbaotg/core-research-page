@@ -5,29 +5,15 @@ import { getI18n, ls } from "@/lib/i18n";
 import { fmtDate } from "@/lib/format";
 import { asset } from "@/lib/basePath";
 import { Countdown } from "@/components/Countdown";
-import Reveal from "@/components/Reveal";
-import CountUp from "@/components/CountUp";
-import Marquee from "@/components/Marquee";
 
 export default async function HomePage() {
-  const [
-    { locale, t },
-    settings,
-    featured,
-    members,
-    conferences,
-    news,
-    pubCount,
-    memberCount,
-  ] = await Promise.all([
+  const [{ locale, t }, settings, featured, members, conferences, news] = await Promise.all([
     getI18n(),
     getSettings(),
     prisma.publication.findMany({ orderBy: [{ featured: "desc" }, { order: "asc" }], take: 3 }),
     prisma.member.findMany({ orderBy: { order: "asc" }, take: 6 }),
     prisma.conference.findMany(),
     prisma.news.findMany({ orderBy: { date: "desc" }, take: 3 }),
-    prisma.publication.count(),
-    prisma.member.count(),
   ]);
 
   const upcoming = conferences
@@ -37,67 +23,38 @@ export default async function HomePage() {
   const soonest = upcoming[0];
 
   const heroLines = ls(settings, "heroTitle", locale).split("\n");
-  const marqueeItems = [
-    "VBS 2025 — 1st place",
-    "HCM AI Challenge — 3× 1st",
-    "CVPR",
-    "ACM Multimedia",
-    "WACV",
-    "NeurIPS",
-    "ICCV",
-    "AAAI",
-    "Multimedia Systems",
-  ];
-
-  const bento = [
-    { cls: "cat-purple", n: "01", title: "Computer Vision", desc: "Visual recognition, representation learning and detection.", span: "md:col-span-2 md:row-span-2" },
-    { cls: "cat-blue", n: "02", title: "Interactive Video Retrieval", desc: "Real-time multimodal search over large archives.", span: "" },
-    { cls: "cat-pink", n: "03", title: "Multimodal Learning", desc: "Vision–language fusion.", span: "" },
-    { cls: "cat-orange", n: "04", title: "Scene Text & OCR", desc: "Reading text in images and broadcast video.", span: "md:col-span-2" },
-    { cls: "cat-green", n: "05", title: "Multimedia Indexing", desc: "Scalable content-based retrieval.", span: "" },
-  ];
 
   return (
     <>
-      {/* ============ HERO (dark, animated aurora) ============ */}
-      <section className="hero-dark">
-        <span className="aurora aurora-a" aria-hidden />
-        <span className="aurora aurora-b" aria-hidden />
-        <span className="aurora aurora-c" aria-hidden />
-
-        <div className="container-core grid gap-12 py-24 md:grid-cols-[1.1fr_0.9fr] md:py-32">
+      {/* ============ HERO ============ */}
+      <section className="hero-sunset relative overflow-hidden">
+        <div className="container-core grid gap-10 py-20 md:grid-cols-[1.1fr_0.9fr] md:py-28">
           <div className="rise">
-            <div className="glass mb-6 inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold text-white">
-              <span className="h-1.5 w-1.5 rounded-full bg-accent-green" />
+            <div className="mb-5 inline-flex items-center gap-2 rounded-full bg-ink/10 px-3 py-1 text-xs font-semibold text-ink">
+              <span className="h-1.5 w-1.5 rounded-full bg-primary-deep" />
               {settings.heroKicker}
             </div>
-            <h1 className="font-display text-5xl leading-[1.03] tracking-tight text-white sm:text-6xl lg:text-7xl">
+            <h1 className="font-display text-5xl leading-[1.04] tracking-tight text-ink sm:text-6xl lg:text-7xl">
               {heroLines.map((l, i) => (
                 <span key={i} className="block">
-                  {i === heroLines.length - 1 ? <span className="text-gradient">{l}</span> : l}
+                  {l}
                 </span>
               ))}
             </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/70">
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink-tint">
               {ls(settings, "heroSubtitle", locale)}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link
-                href="/publications"
-                className="inline-flex items-center rounded-sm bg-white px-5 py-3 text-base font-medium text-ink transition hover:bg-white/90"
-              >
+              <Link href="/publications" className="btn btn-dark">
                 {t.heroCtaResearch}
               </Link>
-              <Link
-                href="/people"
-                className="inline-flex items-center rounded-sm border border-white/25 px-5 py-3 text-base font-medium text-white transition hover:border-white/60"
-              >
+              <Link href="/people" className="btn btn-secondary">
                 {t.heroCtaTeam}
               </Link>
             </div>
           </div>
 
-          {/* Next deadline — white card floating on dark */}
+          {/* Next deadline countdown card */}
           <div className="rise self-center">
             {soonest ? (
               <div className="rounded-xl border border-hairline bg-canvas p-6 shadow-layered sm:p-8">
@@ -136,31 +93,25 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ============ VENUE MARQUEE ============ */}
-      <Marquee items={marqueeItems} />
-
-      {/* ============ STATS (count-up) ============ */}
-      <section className="container-core py-16">
-        <Reveal className="grid grid-cols-2 gap-8 md:grid-cols-4">
+      {/* ============ FOCUS STRIP ============ */}
+      <section className="border-b border-hairline-soft bg-surface">
+        <div className="container-core grid gap-6 py-10 sm:grid-cols-3">
           {[
-            { v: 1, suffix: "st", label: "Video Browser Showdown 2025" },
-            { v: 3, suffix: "×", label: "AIC first places (2022–24)" },
-            { v: memberCount, suffix: "", label: t.statResearchers },
-            { v: pubCount, suffix: "", label: t.navPublications },
-          ].map((s, i) => (
-            <div key={i}>
-              <div className="font-display text-5xl text-ink">
-                <CountUp value={s.v} suffix={s.suffix} />
-              </div>
-              <div className="mt-1 text-sm text-steel">{s.label}</div>
+            { k: t.sFocus, v: ls(settings, "focus", locale) },
+            { k: t.sAffiliation, v: ls(settings, "affiliation", locale) },
+            { k: t.sActiveSince, v: settings.since },
+          ].map((x) => (
+            <div key={x.k}>
+              <div className="eyebrow mb-1">{x.k}</div>
+              <div className="text-base font-medium text-ink">{x.v}</div>
             </div>
           ))}
-        </Reveal>
+        </div>
       </section>
 
       {/* ============ ABOUT + FEATURED PUBLICATION ============ */}
-      <section className="container-core py-16 md:py-20">
-        <Reveal className="grid gap-12 md:grid-cols-[0.9fr_1.1fr]">
+      <section className="container-core py-20 md:py-24">
+        <div className="grid gap-12 md:grid-cols-[0.9fr_1.1fr]">
           <div>
             <div className="eyebrow mb-3">{t.aboutEyebrow}</div>
             <h2 className="font-display text-4xl leading-tight text-ink">{t.aboutHeading}</h2>
@@ -174,7 +125,7 @@ export default async function HomePage() {
                 <Link
                   key={p.id}
                   href={p.slug ? `/publications/${p.slug}` : "/publications"}
-                  className="card-feature glow block"
+                  className="card-feature block transition-shadow hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)]"
                 >
                   <div className="flex items-center gap-2">
                     {p.featured && <span className="badge badge-orange">{t.featured}</span>}
@@ -192,129 +143,129 @@ export default async function HomePage() {
               {featured.length === 0 && <p className="text-sm text-steel">{t.noPubs}</p>}
             </div>
           </div>
-        </Reveal>
+        </div>
       </section>
 
-      {/* ============ RESEARCH AREAS — bento chromatic grid ============ */}
-      <section className="container-core pb-16 md:pb-20">
-        <Reveal>
-          <div className="eyebrow mb-3">{t.areasEyebrow}</div>
-          <h2 className="font-display text-4xl text-ink">{t.areasHeading}</h2>
-          <div className="mt-10 grid auto-rows-[180px] grid-cols-1 gap-4 md:grid-cols-4">
-            {bento.map((c) => (
-              <div key={c.n} className={`category-card glow ${c.cls} ${c.span}`}>
-                <div className="text-sm font-semibold opacity-80">{c.n}</div>
-                <div>
-                  <div className="font-display text-2xl" style={{ color: "inherit" }}>
-                    {c.title}
-                  </div>
-                  <p className="mt-2 text-sm opacity-90">{c.desc}</p>
+      {/* ============ RESEARCH AREAS (chromatic category cards) ============ */}
+      <section className="container-core pb-20 md:pb-24">
+        <div className="eyebrow mb-3">{t.areasEyebrow}</div>
+        <h2 className="font-display text-4xl text-ink">{t.areasHeading}</h2>
+        <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {[
+            { cls: "cat-purple", n: "01", title: "Computer Vision", desc: "Visual recognition, representation learning and detection." },
+            { cls: "cat-blue", n: "02", title: "Interactive Video Retrieval", desc: "Real-time, multimodal search over large video archives." },
+            { cls: "cat-pink", n: "03", title: "Multimodal Learning", desc: "Vision–language fusion across text, speech and objects." },
+            { cls: "cat-orange", n: "04", title: "Scene Text & OCR", desc: "Reading text in images and broadcast video." },
+            { cls: "cat-green", n: "05", title: "Multimedia Indexing", desc: "Scalable indexing and content-based retrieval." },
+          ].map((c) => (
+            <div key={c.n} className={`category-card ${c.cls}`}>
+              <div className="text-sm font-semibold opacity-80">{c.n}</div>
+              <div>
+                <div className="font-display text-2xl" style={{ color: "inherit" }}>
+                  {c.title}
                 </div>
+                <p className="mt-2 text-sm opacity-90">{c.desc}</p>
               </div>
-            ))}
-          </div>
-        </Reveal>
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* ============ UPCOMING CONFERENCES PREVIEW ============ */}
       <section className="bg-surface-cream">
-        <div className="container-core py-16 md:py-20">
-          <Reveal>
-            <div className="flex items-end justify-between">
-              <div>
-                <div className="eyebrow mb-3">{t.deadlinesEyebrow}</div>
-                <h2 className="font-display text-4xl text-ink">{t.upcomingConferences}</h2>
-              </div>
-              <Link href="/conferences" className="btn btn-dark hidden sm:inline-flex">
-                {t.viewAll}
-              </Link>
+        <div className="container-core py-20 md:py-24">
+          <div className="flex items-end justify-between">
+            <div>
+              <div className="eyebrow mb-3">{t.deadlinesEyebrow}</div>
+              <h2 className="font-display text-4xl text-ink">{t.upcomingConferences}</h2>
             </div>
+            <Link href="/conferences" className="btn btn-dark hidden sm:inline-flex">
+              {t.viewAll}
+            </Link>
+          </div>
 
-            <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {upcoming.slice(0, 4).map(({ conf, date, kind }) => (
-                <Link
-                  key={conf.id}
-                  href="/conferences"
-                  className="card glow block bg-canvas"
-                >
-                  <div
-                    className="mb-3 h-1 w-10 rounded-full"
-                    style={{ background: conf.color || "#7a3dff" }}
-                  />
-                  <div className="font-display text-2xl text-ink">{conf.name}</div>
-                  <p className="text-sm text-steel">{conf.location}</p>
-                  <p className="mt-4 text-xs uppercase tracking-wide text-stone">
-                    {kind === "deadline" ? t.badgeDeadline : t.starts}
-                  </p>
-                  <p className="text-sm font-medium text-ink">{fmtDate(date)}</p>
-                </Link>
-              ))}
-            </div>
-          </Reveal>
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {upcoming.slice(0, 4).map(({ conf, date, kind }) => (
+              <Link
+                key={conf.id}
+                href="/conferences"
+                className="card block bg-canvas transition-shadow hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)]"
+              >
+                <div
+                  className="mb-3 h-1 w-10 rounded-full"
+                  style={{ background: conf.color || "#fa520f" }}
+                />
+                <div className="font-display text-2xl text-ink">{conf.name}</div>
+                <p className="text-sm text-steel">{conf.location}</p>
+                <p className="mt-4 text-xs uppercase tracking-wide text-stone">
+                  {kind === "deadline" ? t.badgeDeadline : t.starts}
+                </p>
+                <p className="text-sm font-medium text-ink">{fmtDate(date)}</p>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* ============ PEOPLE PREVIEW ============ */}
-      <section className="container-core py-16 md:py-20">
-        <Reveal>
-          <div className="flex items-end justify-between">
-            <div>
-              <div className="eyebrow mb-3">{t.teamEyebrow}</div>
-              <h2 className="font-display text-4xl text-ink">{t.peopleHeading}</h2>
-            </div>
-            <Link href="/people" className="text-sm font-medium text-link hover:underline">
-              {t.allMembers}
-            </Link>
+      <section className="container-core py-20 md:py-24">
+        <div className="flex items-end justify-between">
+          <div>
+            <div className="eyebrow mb-3">{t.teamEyebrow}</div>
+            <h2 className="font-display text-4xl text-ink">{t.peopleHeading}</h2>
           </div>
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {members.map((m) => {
-              const links = parseLinks(m.links);
-              return (
-                <div key={m.id} className="card glow">
-                  <div className="flex items-center gap-4">
-                    <div
-                      className="grid h-14 w-14 shrink-0 place-items-center rounded-full font-display text-xl text-on-primary"
-                      style={{
-                        background: m.photo
-                          ? `center/cover url(${asset(m.photo)})`
-                          : "linear-gradient(135deg, var(--color-accent-purple), var(--color-accent-blue))",
-                      }}
-                    >
-                      {!m.photo && m.name.charAt(0)}
-                    </div>
-                    <div>
-                      <div className="font-medium text-ink">
-                        {m.title ? `${m.title} ` : ""}
-                        {m.name}
-                      </div>
-                      <div className="text-sm text-steel">{m.role}</div>
-                    </div>
+          <Link href="/people" className="text-sm font-medium text-link hover:underline">
+            {t.allMembers}
+          </Link>
+        </div>
+        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {members.map((m) => {
+            const links = parseLinks(m.links);
+            return (
+              <div key={m.id} className="card">
+                <div className="flex items-center gap-4">
+                  <div
+                    className="grid h-14 w-14 shrink-0 place-items-center rounded-full font-display text-xl text-on-primary"
+                    style={{
+                      background: m.photo
+                        ? `center/cover url(${asset(m.photo)})`
+                        : "linear-gradient(135deg, var(--color-sunshine-700), var(--color-primary))",
+                    }}
+                  >
+                    {!m.photo && m.name.charAt(0)}
                   </div>
-                  {(links.scholar || links.homepage) && (
-                    <div className="mt-3 flex gap-3 text-sm">
-                      {links.scholar && (
-                        <a href={links.scholar} className="text-link hover:underline" target="_blank" rel="noopener noreferrer">
-                          {t.linkScholar}
-                        </a>
-                      )}
-                      {links.homepage && (
-                        <a href={links.homepage} className="text-link hover:underline" target="_blank" rel="noopener noreferrer">
-                          {t.linkHomepage}
-                        </a>
-                      )}
+                  <div>
+                    <div className="font-medium text-ink">
+                      {m.title ? `${m.title} ` : ""}
+                      {m.name}
                     </div>
-                  )}
+                    <div className="text-sm text-steel">{m.role}</div>
+                  </div>
                 </div>
-              );
-            })}
-          </div>
-        </Reveal>
+                {(links.scholar || links.homepage) && (
+                  <div className="mt-3 flex gap-3 text-sm">
+                    {links.scholar && (
+                      <a href={links.scholar} className="text-link hover:underline" target="_blank" rel="noopener noreferrer">
+                        {t.linkScholar}
+                      </a>
+                    )}
+                    {links.homepage && (
+                      <a href={links.homepage} className="text-link hover:underline" target="_blank" rel="noopener noreferrer">
+                        {t.linkHomepage}
+                      </a>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </section>
 
       {/* ============ NEWS + CTA ============ */}
       <section className="bg-surface">
-        <div className="container-core py-16 md:py-20">
-          <Reveal className="grid gap-12 md:grid-cols-[1fr_1fr]">
+        <div className="container-core py-20 md:py-24">
+          <div className="grid gap-12 md:grid-cols-[1fr_1fr]">
             <div>
               <div className="eyebrow mb-3">{t.newsEyebrow}</div>
               <h2 className="font-display text-4xl text-ink">{t.latest}</h2>
@@ -344,7 +295,7 @@ export default async function HomePage() {
                 </div>
               </div>
             </div>
-          </Reveal>
+          </div>
         </div>
       </section>
     </>

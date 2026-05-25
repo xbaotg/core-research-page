@@ -2,7 +2,6 @@ import { prisma } from "@/lib/prisma";
 import { parseLinks } from "@/lib/data";
 import { asset } from "@/lib/basePath";
 import { getI18n } from "@/lib/i18n";
-import Reveal from "@/components/Reveal";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "People" };
@@ -67,11 +66,11 @@ export default async function PeoplePage() {
           const list = members.filter((m) => m.category === g.key);
           if (list.length === 0) return null;
           return (
-            <Reveal key={g.key}>
+            <section key={g.key}>
               <div className="eyebrow mb-6">{g.label}</div>
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {list.map((m) => (
-                  <div key={m.id} className="card-feature glow">
+                  <div key={m.id} className="card-feature">
                     <div className="flex items-center gap-4">
                       <div
                         className="grid h-16 w-16 shrink-0 place-items-center rounded-full font-display text-2xl text-on-primary"
@@ -102,7 +101,7 @@ export default async function PeoplePage() {
                   </div>
                 ))}
               </div>
-            </Reveal>
+            </section>
           );
         })}
         {members.length === 0 && <p className="text-steel">{t.peopleEmpty}</p>}
