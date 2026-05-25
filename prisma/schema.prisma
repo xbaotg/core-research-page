@@ -1,0 +1,78 @@
+// CORE Lab — data model
+// SQLite + Prisma. Links/tags stored as JSON-encoded strings for portability.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Member {
+  id          Int      @id @default(autoincrement())
+  name        String
+  title       String?  // honorific / position label, e.g. "Dr.", "MSc", "PhD Student"
+  role        String?  // research focus, e.g. "Computer Vision & Retrieval"
+  affiliation String?  // e.g. "University of Information Technology, VNU-HCM"
+  bio         String?
+  email       String?
+  photo       String?  // image URL
+  links       String   @default("{}") // JSON: { scholar, github, homepage, linkedin }
+  category    String   @default("member") // faculty | member | student | alumni
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+}
+
+model Publication {
+  id          Int      @id @default(autoincrement())
+  title       String
+  authors     String
+  venue       String?  // e.g. "CVPR 2025"
+  venueDetail String?  // longer venue/status line, e.g. "Multimedia Systems (Springer) — under review"
+  year        Int?
+  abstract    String?
+  // ---- private-safe highlight page content (no raw paper is hosted/linked) ----
+  slug        String?  @unique
+  overview    String?  // longer overview / contributions
+  results     String?  // key results & findings
+  highlights  String?  // newline-separated bullet points
+  figures     String   @default("[]") // JSON: [{ src, caption }]
+  pdfUrl      String?  // kept for papers with a PUBLIC link; not rendered on private highlights
+  codeUrl     String?
+  projectUrl  String?
+  image       String?
+  featured    Boolean  @default(false)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+}
+
+model Conference {
+  id        Int       @id @default(autoincrement())
+  name      String    // e.g. "CVPR"
+  fullName  String?   // e.g. "IEEE/CVF Conference on Computer Vision and Pattern Recognition"
+  location  String?
+  deadline  DateTime? // paper submission deadline (countdown target)
+  startDate DateTime?
+  endDate   DateTime?
+  url       String?
+  tags      String?   // comma-separated, e.g. "Vision, Multimedia"
+  color     String?   // accent hex for the card
+  order     Int       @default(0)
+  createdAt DateTime  @default(now())
+}
+
+model News {
+  id        Int      @id @default(autoincrement())
+  title     String
+  date      DateTime @default(now())
+  body      String?
+  link      String?
+  createdAt DateTime @default(now())
+}
+
+model Setting {
+  key   String @id
+  value String
+}
