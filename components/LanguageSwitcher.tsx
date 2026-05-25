@@ -1,18 +1,17 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { LOCALES, type Locale } from "@/lib/dict";
 
 const LABEL: Record<Locale, string> = { en: "EN", vi: "VI" };
 
 export default function LanguageSwitcher({ locale }: { locale: Locale }) {
-  const router = useRouter();
-
   function setLocale(l: Locale) {
     if (l === locale) return;
-    // path=/ so it applies across the whole site (incl. the base path)
+    // path=/ so it applies across the whole site (incl. the base path).
     document.cookie = `locale=${l}; path=/; max-age=31536000; samesite=lax`;
-    router.refresh();
+    // Hard reload so server components re-render with the new cookie
+    // (router.refresh can serve a cached tree and miss the just-set cookie).
+    window.location.reload();
   }
 
   return (
