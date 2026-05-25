@@ -29,7 +29,7 @@ export default function ConferenceCard({
   const tags = (conf.tags || "").split(",").map((s) => s.trim()).filter(Boolean);
 
   return (
-    <div className="card-feature relative overflow-hidden">
+    <div className="card-feature glow relative overflow-hidden">
       <span
         className="absolute inset-x-0 top-0 h-1"
         style={{ background: accent }}

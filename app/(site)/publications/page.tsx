@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { getI18n } from "@/lib/i18n";
+import Reveal from "@/components/Reveal";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Publications" };
@@ -31,14 +32,14 @@ export default async function PublicationsPage() {
 
       <div className="container-core space-y-14 py-20">
         {years.map((y) => (
-          <section key={y}>
+          <Reveal key={y}>
             <div className="mb-6 flex items-center gap-4">
               <h2 className="font-display text-3xl text-ink">{y}</h2>
               <span className="h-px flex-1 bg-hairline" />
             </div>
             <div className="space-y-4">
               {byYear.get(y)!.map((p) => (
-                <article key={p.id} className="card-feature">
+                <article key={p.id} className="card-feature glow">
                   <div className="flex flex-wrap items-center gap-2">
                     {p.featured && <span className="badge badge-orange">{t.featured}</span>}
                     {p.venue && (
@@ -86,7 +87,7 @@ export default async function PublicationsPage() {
                 </article>
               ))}
             </div>
-          </section>
+          </Reveal>
         ))}
         {pubs.length === 0 && <p className="text-steel">{t.pubsEmpty}</p>}
       </div>

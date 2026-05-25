@@ -4,6 +4,7 @@ import { getI18n } from "@/lib/i18n";
 import { fmtDate } from "@/lib/format";
 import { Countdown } from "@/components/Countdown";
 import ConferenceCard from "@/components/ConferenceCard";
+import Reveal from "@/components/Reveal";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Conferences" };
@@ -50,14 +51,14 @@ export default async function ConferencesPage() {
 
       <div className="container-core py-20">
         {upcoming.length > 0 && (
-          <>
+          <Reveal>
             <div className="eyebrow mb-6">{t.upcoming}</div>
             <div className="grid gap-6 lg:grid-cols-2">
               {upcoming.map(({ conf }) => (
                 <ConferenceCard key={conf.id} conf={conf} locale={locale} />
               ))}
             </div>
-          </>
+          </Reveal>
         )}
 
         {conferences.length === 0 && <p className="text-steel">{t.confEmpty}</p>}
