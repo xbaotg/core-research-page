@@ -38,15 +38,15 @@ const pad = (n: number) => String(n).padStart(2, "0");
 function Tile({ value, label }: { value: string; label: string }) {
   return (
     <div className="flex flex-col items-center">
-      <div className="relative overflow-hidden rounded-lg bg-ink/85 px-4 py-3 shadow-[0_12px_24px_-4px_rgba(0,0,0,0.25)] backdrop-blur sm:px-6 sm:py-4">
+      <div className="relative overflow-hidden rounded-lg bg-ink/85 px-2.5 py-2 shadow-[0_12px_24px_-4px_rgba(0,0,0,0.25)] backdrop-blur sm:px-6 sm:py-4">
         <span
           key={value}
-          className="tick-anim block font-display text-4xl tabular-nums text-on-dark sm:text-5xl"
+          className="tick-anim block font-display text-2xl tabular-nums text-white sm:text-5xl"
         >
           {value}
         </span>
       </div>
-      <span className="mt-2 text-[11px] font-semibold uppercase tracking-[1px] text-ink/70">
+      <span className="mt-2 text-[10px] font-semibold uppercase tracking-[1px] text-ink/70 sm:text-[11px]">
         {label}
       </span>
     </div>
@@ -77,13 +77,13 @@ export function Countdown({
   }
 
   return (
-    <div className="flex items-end gap-3 sm:gap-4">
+    <div className="flex items-end justify-center gap-1.5 sm:gap-4">
       <Tile value={pad(parts.days)} label={t.cdDays} />
-      <span className="pb-7 font-display text-3xl text-ink/40">:</span>
+      <span className="pb-5 font-display text-2xl text-ink/40 sm:pb-7 sm:text-3xl">:</span>
       <Tile value={pad(parts.hours)} label={t.cdHrs} />
-      <span className="pb-7 font-display text-3xl text-ink/40">:</span>
+      <span className="pb-5 font-display text-2xl text-ink/40 sm:pb-7 sm:text-3xl">:</span>
       <Tile value={pad(parts.mins)} label={t.cdMin} />
-      <span className="pb-7 font-display text-3xl text-ink/40">:</span>
+      <span className="pb-5 font-display text-2xl text-ink/40 sm:pb-7 sm:text-3xl">:</span>
       <Tile value={pad(parts.secs)} label={t.cdSec} />
     </div>
   );

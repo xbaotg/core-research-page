@@ -111,7 +111,9 @@ summary {
   font-family: var(--font-display);
   font-weight: 600;
   letter-spacing: -0.02em;
-  color: var(--color-ink);
+  /* No color here: it would override text-* utilities (e.g. text-white on the
+     dark countdown tiles / logo). Color comes from utilities or the inherited
+     body color (text-ink). */
 }
 
 /* Uppercase eyebrow — the brand's section-label signature */
