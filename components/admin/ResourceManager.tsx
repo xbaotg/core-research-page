@@ -164,6 +164,45 @@ const CONFIG: Record<string, Cfg> = {
     summary: (r) => ({ title: r.name, sub: r.location }),
   },
 
+  awards: {
+    singular: "award",
+    fields: [
+      { name: "title", label: "Title (competition)", full: true },
+      { name: "event", label: "Event / host line (e.g. MMM 2025 · Japan)", full: true },
+      { name: "prize", label: "Prize (e.g. First Prize)" },
+      {
+        name: "rank",
+        label: "Medal tier",
+        type: "select",
+        options: [
+          { value: "1", label: "🥇 Gold (1st)" },
+          { value: "2", label: "🥈 Silver (2nd)" },
+          { value: "3", label: "🥉 Bronze (3rd)" },
+          { value: "0", label: "Other / honorable" },
+        ],
+      },
+      {
+        name: "scope",
+        label: "Scope",
+        type: "select",
+        options: [
+          { value: "international", label: "International" },
+          { value: "national", label: "National" },
+        ],
+      },
+      { name: "year", label: "Year", type: "number" },
+      { name: "order", label: "Sort order", type: "number" },
+      { name: "featured", label: "Featured", type: "checkbox" },
+      { name: "description", label: "Description", type: "textarea", full: true },
+      { name: "image", label: "Image URL (e.g. /prizes/vbs-2025.png)", full: true },
+      { name: "link", label: "Link URL" },
+    ],
+    summary: (r) => ({
+      title: r.title,
+      sub: [r.prize, r.year, r.scope].filter(Boolean).join(" · "),
+    }),
+  },
+
   news: {
     singular: "news item",
     fields: [

@@ -23,6 +23,7 @@ export default function Nav({
     { href: "/people", label: t.navPeople },
     { href: "/publications", label: t.navPublications },
     { href: "/conferences", label: t.navConferences },
+    { href: "/awards", label: t.navAwards },
     { href: "/contact", label: t.navContact },
   ];
 

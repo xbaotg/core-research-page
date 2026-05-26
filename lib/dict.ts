@@ -10,6 +10,7 @@ export const dict = {
     navPeople: "People",
     navPublications: "Publications",
     navConferences: "Conferences",
+    navAwards: "Awards",
     navContact: "Contact",
 
     // common
@@ -96,6 +97,19 @@ export const dict = {
     conference: "Conference",
     confEmpty: "No conferences yet.",
 
+    // awards
+    awardsEyebrow: "Honors & recognition",
+    awardsHeading: "Awards",
+    awardsSubtitle:
+      "Recognized at international and national competitions in AI, computer vision and video retrieval.",
+    awTotal: "Awards won",
+    awIntl: "International",
+    awNational: "National",
+    awGolds: "First places",
+    awScopeIntl: "International",
+    awScopeNational: "National",
+    awEmpty: "No awards yet.",
+
     // countdown
     cdDays: "Days",
     cdHrs: "Hrs",
@@ -130,6 +144,7 @@ export const dict = {
     navPeople: "Thành viên",
     navPublications: "Công bố",
     navConferences: "Hội nghị",
+    navAwards: "Giải thưởng",
     navContact: "Liên hệ",
 
     featured: "Nổi bật",
@@ -209,6 +224,18 @@ export const dict = {
     paperDeadline: "Hạn nộp bài",
     conference: "Hội nghị",
     confEmpty: "Chưa có hội nghị.",
+
+    awardsEyebrow: "Vinh danh & thành tích",
+    awardsHeading: "Giải thưởng",
+    awardsSubtitle:
+      "Được vinh danh tại các cuộc thi quốc tế và trong nước về AI, thị giác máy tính và truy hồi video.",
+    awTotal: "Giải thưởng",
+    awIntl: "Quốc tế",
+    awNational: "Trong nước",
+    awGolds: "Giải Nhất",
+    awScopeIntl: "Quốc tế",
+    awScopeNational: "Trong nước",
+    awEmpty: "Chưa có giải thưởng.",
 
     cdDays: "Ngày",
     cdHrs: "Giờ",

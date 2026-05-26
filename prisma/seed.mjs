@@ -246,6 +246,100 @@ const conferences = [
   },
 ];
 
+const awards = [
+  {
+    title: "Video Browser Showdown",
+    event: "MMM 2025 · Japan · Interactive Video Retrieval",
+    prize: "Best Overall & Best Experts",
+    rank: 1,
+    scope: "international",
+    year: 2025,
+    description:
+      "First Prize at the premier global competition in interactive video retrieval, hosted at MMM 2025 in Japan. Our system managed 9 TB of video data with under one-second query performance, outperforming teams from top institutions worldwide.",
+    image: "/prizes/vbs-2025.png",
+    featured: true,
+    order: 0,
+  },
+  {
+    title: "Science & Technology Award for University Students",
+    event: "Ministry of Education and Training, Vietnam",
+    prize: "First Prize",
+    rank: 1,
+    scope: "national",
+    year: 2025,
+    description:
+      "Prestigious national award recognizing outstanding scientific research contributions by university students across all disciplines in Vietnam.",
+    image: "/prizes/science-technology-2025.png",
+    featured: false,
+    order: 1,
+  },
+  {
+    title: "TRECVID Ad-hoc Video Search",
+    event: "NIST · Ad-hoc Video Search benchmark",
+    prize: "First Prize",
+    rank: 1,
+    scope: "international",
+    year: 2024,
+    description:
+      "Top performance at NIST's benchmark for interpreting complex textual queries against large-scale video datasets, using advanced vision-language models and multimodal retrieval.",
+    image: "/prizes/trecvid-2024.png",
+    featured: false,
+    order: 0,
+  },
+  {
+    title: "AI City Challenge",
+    event: "NVIDIA · CVPR 2024 Workshop",
+    prize: "Fourth Prize",
+    rank: 0,
+    scope: "international",
+    year: 2024,
+    description:
+      "Road object detection with fisheye cameras — a challenging real-world task requiring handling of severe lens distortion. Outperformed by only a few major companies globally.",
+    image: "/prizes/ai-city-2024.png",
+    featured: false,
+    order: 1,
+  },
+  {
+    title: "Ho Chi Minh AI Challenge",
+    event: "Video Retrieval & Multimodal Understanding",
+    prize: "First Prize",
+    rank: 1,
+    scope: "national",
+    year: 2024,
+    description:
+      "Vietnam's flagship AI competition, building innovative AI solutions for the country's unique challenges in video retrieval and multimodal understanding.",
+    image: "/prizes/hcm-ai-2024.png",
+    featured: false,
+    order: 2,
+  },
+  {
+    title: "Key Information Localization & Extraction (KILE)",
+    event: "ICDAR 2023 · CLEF",
+    prize: "Third Prize",
+    rank: 3,
+    scope: "international",
+    year: 2023,
+    description:
+      "Top 3 globally in designing systems for extracting key information from complex document layouts at ICDAR 2023's Key Information Extraction challenge (CLEF 2023).",
+    image: "/prizes/icdar-2023.png",
+    featured: false,
+    order: 0,
+  },
+  {
+    title: "Ho Chi Minh AI Challenge",
+    event: "Video Retrieval",
+    prize: "First Prize",
+    rank: 1,
+    scope: "national",
+    year: 2023,
+    description:
+      "Won first place in Vietnam's flagship AI competition, demonstrating excellence in video retrieval systems for real-world AI challenges.",
+    image: "/prizes/hcm-ai-2023.png",
+    featured: false,
+    order: 1,
+  },
+];
+
 const news = [
   {
     title: "CORE Lab website goes live",
@@ -271,12 +365,14 @@ async function main() {
   await prisma.member.deleteMany();
   await prisma.publication.deleteMany();
   await prisma.conference.deleteMany();
+  await prisma.award.deleteMany();
   await prisma.news.deleteMany();
   await prisma.setting.deleteMany();
 
   await prisma.member.createMany({ data: members });
   await prisma.publication.createMany({ data: publications });
   await prisma.conference.createMany({ data: conferences });
+  await prisma.award.createMany({ data: awards });
   await prisma.news.createMany({ data: news });
   for (const [key, value] of Object.entries(settings)) {
     await prisma.setting.create({ data: { key, value } });
@@ -285,6 +381,7 @@ async function main() {
     members: members.length,
     publications: publications.length,
     conferences: conferences.length,
+    awards: awards.length,
     news: news.length,
     settings: Object.keys(settings).length,
   });

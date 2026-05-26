@@ -63,6 +63,22 @@ model Conference {
   createdAt DateTime  @default(now())
 }
 
+model Award {
+  id          Int      @id @default(autoincrement())
+  title       String   // e.g. "Video Browser Showdown"
+  event       String?  // competition / host line, e.g. "MMM 2025 · Japan"
+  prize       String?  // e.g. "First Prize", "Best Overall & Best Experts"
+  rank        Int      @default(0) // medal tier: 1=gold, 2=silver, 3=bronze, 0=other
+  scope       String   @default("international") // international | national
+  year        Int?
+  description String?
+  image       String?  // image URL
+  link        String?
+  featured    Boolean  @default(false)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+}
+
 model News {
   id        Int      @id @default(autoincrement())
   title     String
