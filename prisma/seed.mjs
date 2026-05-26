@@ -1519,6 +1519,37 @@ const publications = [
     featured: false,
     order: 92,
   },
+
+  // ----- From CS-UIT AI Club research page (deduped against the above) -----
+  {
+    title: "A Framework for Evaluating Video Summary Approaches",
+    authors: "Tien-Dung Mai, Tien Do, Duy-Dinh Le",
+    venue: "MAPR",
+    venueDetail:
+      "MAPR 2022 · International Conference on Multimedia Analysis and Pattern Recognition",
+    year: 2022,
+    abstract:
+      "Video summarization is a crucial task to address the explosion of video data: the goal is to create a shortened version of the original video while retaining its essential, pertinent content. A video summary system generally comprises three primary modules — shot boundary detection, shot scoring and shot selection — but existing research focuses on a single module, making comprehensive cross-module comparison difficult. This work provides a framework for evaluating alternative techniques for video summarization that permits multiple combinations across modules, assessing the significance of each method stage. The analysis shows that combining Uniform sampling with DSNet Anchor-free yields state-of-the-art performance on the SumMe dataset.",
+    pdfUrl: "",
+    codeUrl: "",
+    projectUrl: "",
+    featured: false,
+    order: 93,
+  },
+  {
+    title: "RoBERTa Ensemble Technique for Document Information Localization and Extraction",
+    authors: "Bao Gia Tran, D. N. M. Bao, et al.",
+    venue: "CLEF",
+    venueDetail: "CLEF 2023 Working Notes (CEUR-WS) · ICDAR 2023 KILE challenge",
+    year: 2023,
+    abstract:
+      "The UIT team entry to the ICDAR 2023 Key Information Localization and Extraction (KILE) challenge at CLEF 2023, using a RoBERTa-based ensemble to localize and extract key fields from complex document layouts. Published as CLEF 2023 Working Notes (CEUR-WS); see the working notes for the full text.",
+    pdfUrl: "",
+    codeUrl: "",
+    projectUrl: "",
+    featured: false,
+    order: 94,
+  },
 ];
 
 const D = (s) => new Date(s + "T23:59:00Z");
