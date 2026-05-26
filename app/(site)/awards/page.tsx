@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { getI18n } from "@/lib/i18n";
 import { asset } from "@/lib/basePath";
@@ -7,13 +6,36 @@ export const dynamic = "force-dynamic";
 export const metadata = { title: "Awards" };
 
 // Medal styling per rank tier (1=gold, 2=silver, 3=bronze, 0=other).
-const MEDALS: Record<number, { emoji: string; ring: string; chip: string }> = {
-  1: { emoji: "🥇", ring: "var(--color-accent-yellow)", chip: "bg-[var(--color-accent-yellow)] text-ink" },
-  2: { emoji: "🥈", ring: "var(--color-stone)", chip: "bg-[var(--color-stone)] text-on-dark" },
-  3: { emoji: "🥉", ring: "var(--color-accent-orange)", chip: "bg-[var(--color-accent-orange)] text-on-dark" },
-  0: { emoji: "🏅", ring: "var(--color-accent-blue)", chip: "bg-[var(--color-accent-blue)] text-on-dark" },
+type Medal = { emoji: string; bar: string; chip: string; grad: string };
+const MEDALS: Record<number, Medal> = {
+  1: {
+    emoji: "🥇",
+    bar: "var(--color-accent-yellow)",
+    chip: "bg-[var(--color-accent-yellow)] text-ink",
+    grad: "linear-gradient(135deg,#ffae13,#ff6b00)",
+  },
+  2: {
+    emoji: "🥈",
+    bar: "var(--color-stone)",
+    chip: "bg-[var(--color-stone)] text-on-dark",
+    grad: "linear-gradient(135deg,#c7c7c7,#5a5a5a)",
+  },
+  3: {
+    emoji: "🥉",
+    bar: "var(--color-accent-orange)",
+    chip: "bg-[var(--color-accent-orange)] text-on-dark",
+    grad: "linear-gradient(135deg,#ff8105,#cc3a05)",
+  },
+  0: {
+    emoji: "🏅",
+    bar: "var(--color-accent-blue)",
+    chip: "bg-[var(--color-accent-blue)] text-on-dark",
+    grad: "linear-gradient(135deg,#3b89ff,#006acc)",
+  },
 };
 const medal = (rank: number) => MEDALS[rank] ?? MEDALS[0];
+
+type Award = Awaited<ReturnType<typeof prisma.award.findMany>>[number];
 
 export default async function AwardsPage() {
   const [{ t }, awards] = await Promise.all([
@@ -22,25 +44,26 @@ export default async function AwardsPage() {
   ]);
 
   const total = awards.length;
-  const intl = awards.filter((a) => a.scope === "international").length;
-  const national = awards.filter((a) => a.scope === "national").length;
-  const golds = awards.filter((a) => a.rank === 1).length;
+  const firstPrizes = awards.filter((a) => a.rank === 1).length;
+  const years = new Set(awards.map((a) => a.year).filter(Boolean)).size;
 
   const stats = [
     { v: total, k: t.awTotal },
-    { v: intl, k: t.awIntl },
-    { v: national, k: t.awNational },
-    { v: golds, k: t.awGolds },
+    { v: firstPrizes, k: t.awFirstPrizes },
+    { v: years, k: t.awYears },
   ];
 
-  // Group by year, newest first.
-  const byYear = new Map<string, typeof awards>();
-  for (const a of awards) {
+  const featured = awards.filter((a) => a.featured);
+  const rest = awards.filter((a) => !a.featured);
+
+  // Group the rest by year, newest first.
+  const byYear = new Map<string, Award[]>();
+  for (const a of rest) {
     const y = a.year ? String(a.year) : "Other";
     if (!byYear.has(y)) byYear.set(y, []);
     byYear.get(y)!.push(a);
   }
-  const years = [...byYear.keys()];
+  const yearKeys = [...byYear.keys()];
 
   return (
     <>
@@ -56,10 +79,10 @@ export default async function AwardsPage() {
       {/* ============ STATS STRIP ============ */}
       {total > 0 && (
         <section className="border-b border-hairline-soft bg-surface">
-          <div className="container-core grid grid-cols-2 gap-6 py-10 sm:grid-cols-4">
+          <div className="container-core grid grid-cols-3 gap-6 py-10">
             {stats.map((s) => (
               <div key={s.k}>
-                <div className="font-display text-4xl text-ink">{s.v}</div>
+                <div className="font-display text-4xl text-ink sm:text-5xl">{s.v}</div>
                 <div className="eyebrow mt-1">{s.k}</div>
               </div>
             ))}
@@ -67,62 +90,127 @@ export default async function AwardsPage() {
         </section>
       )}
 
-      {/* ============ AWARDS BY YEAR ============ */}
-      <div className="container-core space-y-16 py-20">
-        {years.map((y) => (
+      <div className="container-core space-y-16 py-16 md:py-20">
+        {/* ============ FEATURED BANNERS ============ */}
+        {featured.length > 0 && (
+          <section className="space-y-6">
+            {featured.map((a) => {
+              const m = medal(a.rank);
+              return (
+                <article
+                  key={a.id}
+                  className="rise grid overflow-hidden rounded-2xl border border-hairline bg-canvas shadow-layered md:grid-cols-2"
+                >
+                  <div
+                    className="relative min-h-[260px] overflow-hidden"
+                    style={a.image ? undefined : { background: m.grad }}
+                  >
+                    {a.image ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={asset(a.image)}
+                        alt={a.title}
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <div className="grid h-full place-items-center text-7xl">{m.emoji}</div>
+                    )}
+                  </div>
+                  <div className="flex flex-col justify-center gap-3 p-8 md:p-10">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="badge badge-orange">★ {t.featured}</span>
+                      <span className={`badge ${m.chip}`}>
+                        {m.emoji} {a.prize}
+                      </span>
+                    </div>
+                    <h2 className="font-display text-3xl leading-tight text-ink sm:text-4xl">
+                      {a.title}
+                    </h2>
+                    {a.event && <p className="text-sm font-medium text-steel">{a.event}</p>}
+                    {a.description && (
+                      <p className="max-w-xl leading-relaxed text-slate">{a.description}</p>
+                    )}
+                    {(a.year || a.link) && (
+                      <div className="mt-1 flex items-center gap-4 text-sm">
+                        {a.year && <span className="font-mono text-stone">{a.year}</span>}
+                        {a.link && (
+                          <a
+                            href={a.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-medium text-link hover:underline"
+                          >
+                            {t.visit}
+                          </a>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </article>
+              );
+            })}
+          </section>
+        )}
+
+        {/* ============ AWARDS BY YEAR ============ */}
+        {yearKeys.map((y) => (
           <section key={y}>
-            <div className="mb-8 flex items-center gap-4">
+            <div className="mb-6 flex items-center gap-4">
               <h2 className="font-display text-3xl text-ink">{y}</h2>
+              <span className="text-sm text-stone">
+                {byYear.get(y)!.length} {byYear.get(y)!.length === 1 ? "award" : "awards"}
+              </span>
               <span className="h-px flex-1 bg-hairline" />
             </div>
 
-            <div className="space-y-6">
-              {byYear.get(y)!.map((a, i) => {
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {byYear.get(y)!.map((a) => {
                 const m = medal(a.rank);
-                const scopeLabel = a.scope === "national" ? t.awScopeNational : t.awScopeIntl;
-                const reversed = i % 2 === 1; // alternate image side
                 return (
                   <article
                     key={a.id}
-                    className="rise grid overflow-hidden rounded-xl border border-hairline bg-canvas shadow-layered transition-shadow hover:shadow-[0_12px_40px_rgba(0,0,0,0.08)] md:grid-cols-[420px_1fr]"
+                    className="rise group flex flex-col overflow-hidden rounded-xl border border-hairline bg-canvas transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_14px_40px_rgba(0,0,0,0.12)]"
                   >
-                    {/* Media */}
-                    {a.image && (
-                      <div
-                        className={`relative min-h-[220px] bg-surface ${reversed ? "md:order-2" : ""}`}
-                      >
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={asset(a.image)}
-                          alt={a.title}
-                          loading="lazy"
-                          className="h-full w-full object-cover"
-                        />
-                        <span
-                          className="absolute left-4 top-4 grid h-12 w-12 place-items-center rounded-full bg-canvas text-2xl shadow-layered"
-                          style={{ boxShadow: `0 0 0 3px ${m.ring}` }}
-                          aria-hidden
-                        >
+                    {/* color accent bar — instant rank cue */}
+                    <div className="h-1 w-full" style={{ background: m.bar }} />
+
+                    {/* media */}
+                    <div
+                      className="relative h-44 overflow-hidden"
+                      style={a.image ? undefined : { background: m.grad }}
+                    >
+                      {a.image ? (
+                        <>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={asset(a.image)}
+                            alt={a.title}
+                            loading="lazy"
+                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent" />
+                        </>
+                      ) : (
+                        <div className="grid h-full place-items-center text-6xl drop-shadow-sm">
                           {m.emoji}
-                        </span>
-                      </div>
-                    )}
+                        </div>
+                      )}
+                      <span
+                        className={`badge ${m.chip} absolute bottom-3 left-3 shadow-sm`}
+                      >
+                        {m.emoji} {a.prize}
+                      </span>
+                    </div>
 
-                    {/* Body */}
-                    <div className="flex flex-col justify-center gap-2 p-8">
-                      <div className="flex flex-wrap items-center gap-2">
-                        {a.featured && <span className="badge badge-orange">{t.featured}</span>}
-                        <span className={`badge ${m.chip}`}>
-                          {!a.image && <span aria-hidden>{m.emoji} </span>}
-                          {a.prize}
-                        </span>
-                        <span className="badge badge-cream">{scopeLabel}</span>
+                    {/* body */}
+                    <div className="flex flex-1 flex-col p-6">
+                      <div className="eyebrow">
+                        {a.year}
+                        {a.event ? ` · ${a.event}` : ""}
                       </div>
-
-                      <h3 className="mt-1 text-2xl font-medium leading-snug text-ink">{a.title}</h3>
-                      {a.event && <p className="text-sm font-medium text-steel">{a.event}</p>}
+                      <h3 className="mt-2 text-lg font-medium leading-snug text-ink">{a.title}</h3>
                       {a.description && (
-                        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate">
+                        <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-slate">
                           {a.description}
                         </p>
                       )}
@@ -144,14 +232,7 @@ export default async function AwardsPage() {
           </section>
         ))}
 
-        {total === 0 && (
-          <p className="text-steel">
-            {t.awEmpty}{" "}
-            <Link href="/admin/awards" className="text-link underline">
-              Add the first award →
-            </Link>
-          </p>
-        )}
+        {total === 0 && <p className="text-steel">{t.awEmpty}</p>}
       </div>
     </>
   );

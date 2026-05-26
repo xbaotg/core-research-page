@@ -103,11 +103,8 @@ export const dict = {
     awardsSubtitle:
       "Recognized at international and national competitions in AI, computer vision and video retrieval.",
     awTotal: "Awards won",
-    awIntl: "International",
-    awNational: "National",
-    awGolds: "First places",
-    awScopeIntl: "International",
-    awScopeNational: "National",
+    awFirstPrizes: "First prizes",
+    awYears: "Years active",
     awEmpty: "No awards yet.",
 
     // countdown
@@ -230,11 +227,8 @@ export const dict = {
     awardsSubtitle:
       "Được vinh danh tại các cuộc thi quốc tế và trong nước về AI, thị giác máy tính và truy hồi video.",
     awTotal: "Giải thưởng",
-    awIntl: "Quốc tế",
-    awNational: "Trong nước",
-    awGolds: "Giải Nhất",
-    awScopeIntl: "Quốc tế",
-    awScopeNational: "Trong nước",
+    awFirstPrizes: "Giải Nhất",
+    awYears: "Năm hoạt động",
     awEmpty: "Chưa có giải thưởng.",
 
     cdDays: "Ngày",
