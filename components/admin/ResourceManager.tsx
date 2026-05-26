@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { api } from "@/lib/basePath";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -232,6 +232,15 @@ export default function ResourceManager({
   const [form, setForm] = useState<Record<string, any>>({});
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const formRef = useRef<HTMLFormElement>(null);
+
+  // The edit/new form renders above a potentially long list — bring it into
+  // view when it opens, otherwise editing a lower item looks like a no-op.
+  useEffect(() => {
+    if (editing !== null) {
+      formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [editing]);
 
   function openNew() {
     setForm(emptyForm(cfg, items.length));
@@ -298,7 +307,7 @@ export default function ResourceManager({
       </div>
 
       {editing !== null && (
-        <form onSubmit={save} className="card-feature mb-8">
+        <form ref={formRef} onSubmit={save} className="card-feature mb-8">
           <h2 className="mb-4 text-lg font-medium text-ink">
             {editing === "new" ? `New ${cfg.singular}` : `Edit ${cfg.singular}`}
           </h2>
