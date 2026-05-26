@@ -181,15 +181,6 @@ const CONFIG: Record<string, Cfg> = {
           { value: "0", label: "Other / honorable" },
         ],
       },
-      {
-        name: "scope",
-        label: "Scope",
-        type: "select",
-        options: [
-          { value: "international", label: "International" },
-          { value: "national", label: "National" },
-        ],
-      },
       { name: "year", label: "Year", type: "number" },
       { name: "order", label: "Sort order", type: "number" },
       { name: "featured", label: "Featured", type: "checkbox" },
@@ -199,7 +190,7 @@ const CONFIG: Record<string, Cfg> = {
     ],
     summary: (r) => ({
       title: r.title,
-      sub: [r.prize, r.year, r.scope].filter(Boolean).join(" · "),
+      sub: [r.prize, r.year].filter(Boolean).join(" · "),
     }),
   },
 
