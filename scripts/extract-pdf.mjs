@@ -3,9 +3,13 @@ import path from "node:path";
 import sharp from "sharp";
 import * as pdfjs from "pdfjs-dist/legacy/build/pdf.mjs";
 
+// Usage: node scripts/extract-pdf.mjs [pdfPath] [outDir] [txtPath]
+// Args override the defaults so multiple PDFs can be processed into separate dirs.
 const PDF =
+  process.argv[2] ||
   "publications/_Journal___Multimedia_Systems___Review__Towards_Scalable_and_Context_Aware_Multimodal_Interactive_Video_Retrieval__Non_Highlighted_ (3).pdf";
-const OUT = "/tmp/figs";
+const OUT = process.argv[3] || "/tmp/figs";
+const TXT = process.argv[4] || "/tmp/paper.txt";
 fs.mkdirSync(OUT, { recursive: true });
 
 const data = new Uint8Array(fs.readFileSync(PDF));
@@ -13,11 +17,21 @@ const doc = await pdfjs.getDocument({ data, useSystemFonts: true }).promise;
 console.log("PAGES", doc.numPages);
 
 function getObj(page, id) {
+  // Some XObjects never resolve their callback (object not materialized);
+  // race against a timeout so a missing image can't hang the top-level await.
   return new Promise((resolve) => {
+    let done = false;
+    const finish = (v) => {
+      if (done) return;
+      done = true;
+      clearTimeout(t);
+      resolve(v);
+    };
+    const t = setTimeout(() => finish(null), 4000);
     try {
-      page.objs.get(id, resolve);
+      page.objs.get(id, finish);
     } catch {
-      resolve(null);
+      finish(null);
     }
   });
 }
@@ -50,6 +64,7 @@ for (let p = 1; p <= doc.numPages; p++) {
 
   let idx = 0;
   for (const id of ids) {
+   try {
     const img = await getObj(page, id);
     if (!img || !img.width || !img.height) continue;
     const { width: w, height: h } = img;
@@ -81,11 +96,14 @@ for (let p = 1; p <= doc.numPages; p++) {
     } catch (e) {
       console.log("encode fail", id, e.message);
     }
+   } catch (e) {
+    console.log("skip image on page", p, e.message);
+   }
   }
 }
 
-fs.writeFileSync("/tmp/paper.txt", textAll);
-console.log("TEXT chars", textAll.length, "-> /tmp/paper.txt");
+fs.writeFileSync(TXT, textAll);
+console.log("TEXT chars", textAll.length, "->", TXT);
 inventory.sort((a, b) => b.area - a.area);
 console.log("\nTOP IMAGES (by area):");
 for (const im of inventory.slice(0, 25)) {
