@@ -5,16 +5,13 @@ export default function Logo({ name = "CORE" }: { name?: string }) {
     <Link
       href="/"
       aria-label={`${name} Lab — home`}
-      className="group flex items-center gap-2.5"
+      className="group inline-flex items-baseline"
     >
-      <span
-        className="grid h-8 w-8 place-items-center rounded-md bg-ink font-display text-[15px] font-bold leading-none text-white shadow-sm transition-transform duration-200 group-hover:scale-105"
-        aria-hidden
-      >
-        {name.charAt(0) || "C"}
+      <span className="font-display text-xl font-bold tracking-tight text-ink transition-colors group-hover:text-primary">
+        {name}
       </span>
-      <span className="text-[15px] font-semibold tracking-tight text-ink">
-        {name} <span className="font-normal text-stone">Lab</span>
+      <span className="ml-1.5 font-display text-xl font-normal tracking-tight text-stone">
+        Lab
       </span>
     </Link>
   );
