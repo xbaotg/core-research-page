@@ -43,16 +43,6 @@ export default async function AwardsPage() {
     prisma.award.findMany({ orderBy: [{ year: "desc" }, { order: "asc" }] }),
   ]);
 
-  const total = awards.length;
-  const firstPrizes = awards.filter((a) => a.rank === 1).length;
-  const years = new Set(awards.map((a) => a.year).filter(Boolean)).size;
-
-  const stats = [
-    { v: total, k: t.awTotal },
-    { v: firstPrizes, k: t.awFirstPrizes },
-    { v: years, k: t.awYears },
-  ];
-
   const featured = awards.filter((a) => a.featured);
   const rest = awards.filter((a) => !a.featured);
 
@@ -75,20 +65,6 @@ export default async function AwardsPage() {
           <p className="mt-4 max-w-2xl text-lg text-white/90">{t.awardsSubtitle}</p>
         </div>
       </section>
-
-      {/* ============ STATS STRIP ============ */}
-      {total > 0 && (
-        <section className="border-b border-hairline-soft bg-surface">
-          <div className="container-core grid grid-cols-3 gap-6 py-10">
-            {stats.map((s) => (
-              <div key={s.k}>
-                <div className="font-display text-4xl text-ink sm:text-5xl">{s.v}</div>
-                <div className="eyebrow mt-1">{s.k}</div>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
 
       <div className="container-core space-y-16 py-16 md:py-20">
         {/* ============ FEATURED BANNERS ============ */}
@@ -232,7 +208,7 @@ export default async function AwardsPage() {
           </section>
         ))}
 
-        {total === 0 && <p className="text-steel">{t.awEmpty}</p>}
+        {awards.length === 0 && <p className="text-steel">{t.awEmpty}</p>}
       </div>
     </>
   );
