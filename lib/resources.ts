@@ -31,7 +31,7 @@ const slugify = (s: string) =>
     .replace(/^-+|-+$/g, "")
     .slice(0, 80);
 
-export type ResourceKey = "members" | "publications" | "conferences" | "news";
+export type ResourceKey = "members" | "publications" | "conferences" | "awards" | "news";
 
 type ResourceConfig = {
   // prisma delegate (typed loosely on purpose for the generic handler)
@@ -102,6 +102,23 @@ export const RESOURCES: Record<ResourceKey, ResourceConfig> = {
       url: strOrNull(b.url),
       tags: strOrNull(b.tags),
       color: strOrNull(b.color),
+      order: intDefault(b.order),
+    }),
+  },
+  awards: {
+    delegate: prisma.award,
+    orderBy: [{ year: "desc" }, { order: "asc" }],
+    parse: (b) => ({
+      title: str(b.title),
+      event: strOrNull(b.event),
+      prize: strOrNull(b.prize),
+      rank: intDefault(b.rank),
+      scope: str(b.scope) || "international",
+      year: intOrNull(b.year),
+      description: strOrNull(b.description),
+      image: strOrNull(b.image),
+      link: strOrNull(b.link),
+      featured: bool(b.featured),
       order: intDefault(b.order),
     }),
   },

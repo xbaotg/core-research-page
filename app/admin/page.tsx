@@ -8,10 +8,11 @@ export const metadata = { title: "Admin" };
 export default async function AdminDashboard() {
   await requireAuth();
 
-  const [members, publications, conferences, news] = await Promise.all([
+  const [members, publications, conferences, awards, news] = await Promise.all([
     prisma.member.count(),
     prisma.publication.count(),
     prisma.conference.count(),
+    prisma.award.count(),
     prisma.news.count(),
   ]);
 
@@ -19,6 +20,7 @@ export default async function AdminDashboard() {
     { href: "/admin/members", label: "People", count: members },
     { href: "/admin/publications", label: "Publications", count: publications },
     { href: "/admin/conferences", label: "Conferences", count: conferences },
+    { href: "/admin/awards", label: "Awards", count: awards },
     { href: "/admin/news", label: "News", count: news },
   ];
 
