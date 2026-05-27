@@ -4,8 +4,9 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        # basePath is compiled into the client bundle — must be set at build time.
+        # NEXT_PUBLIC_* are compiled into the client bundle — set at build time.
         NEXT_PUBLIC_BASE_PATH: ${NEXT_PUBLIC_BASE_PATH:-}
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-https://core.uit.edu.vn}
     image: core-website:latest
     container_name: core-website
     restart: unless-stopped
@@ -17,6 +18,7 @@ services:
       # SQLite file on the persisted volume below.
       DATABASE_URL: file:/app/data/app.db
       NEXT_PUBLIC_BASE_PATH: ${NEXT_PUBLIC_BASE_PATH:-}
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-https://core.uit.edu.vn}
       # CHANGE THESE for any real deployment.
       ADMIN_PASSWORD: ${ADMIN_PASSWORD:-core-admin}
       AUTH_SECRET: ${AUTH_SECRET:-change-this-to-a-long-random-string-please}

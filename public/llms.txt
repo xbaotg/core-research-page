@@ -1,0 +1,28 @@
+# CORE Lab
+
+> CORE Lab is a computer-vision and information-retrieval research group at the
+> University of Information Technology (UIT), VNU-HCM, Ho Chi Minh City, Vietnam.
+
+## Research focus
+- Computer vision (visual recognition, detection, representation learning)
+- Image & video retrieval (real-time, large-scale, interactive)
+- Multimodal & multimedia learning (vision–language, speech, audio)
+- Scene-text recognition / OCR (in-the-wild signboards, broadcast video)
+- Multi-agent tracking
+- Conversational image retrieval
+
+## Highlights
+- 1st place — Video Browser Showdown (VBS) 2025
+- 3× consecutive wins — Ho Chi Minh AI Challenge
+
+## Key pages
+- Members: /people
+- Publications: /publications
+- Datasets: /datasets  (e.g. SignboardText — in-the-wild signboard scene text)
+- Awards: /awards
+- Conferences: /conferences
+- Contact: /contact
+
+## Contact
+- Principal Investigator: Dr. Thanh Duc Ngo — thanhnd@uit.edu.vn
+- Affiliation: University of Information Technology, VNU-HCM

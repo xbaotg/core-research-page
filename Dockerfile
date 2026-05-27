@@ -16,8 +16,10 @@ RUN npm ci --include=dev
 # ── Build ───────────────────────────────────────────────────────────────
 FROM base AS build
 # basePath is baked into the client bundle at build time, so it must be set here.
-ARG NEXT_PUBLIC_BASE_PATH=/core
+ARG NEXT_PUBLIC_BASE_PATH=
 ENV NEXT_PUBLIC_BASE_PATH=${NEXT_PUBLIC_BASE_PATH}
+ARG NEXT_PUBLIC_SITE_URL=https://core.uit.edu.vn
+ENV NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL}
 ENV NEXT_TELEMETRY_DISABLED=1
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
