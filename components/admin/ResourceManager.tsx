@@ -50,6 +50,7 @@ const CONFIG: Record<string, Cfg> = {
         type: "select",
         options: [
           { value: "faculty", label: "Faculty & Advisors" },
+          { value: "collaborator", label: "Collaborating Professors" },
           { value: "member", label: "Research Members" },
           { value: "student", label: "Students" },
           { value: "alumni", label: "Alumni" },
