@@ -95,11 +95,10 @@ export default async function HomePage() {
 
       {/* ============ FOCUS STRIP ============ */}
       <section className="border-b border-hairline-soft bg-surface">
-        <div className="container-core grid gap-6 py-10 sm:grid-cols-3">
+        <div className="container-core grid gap-6 py-10 sm:grid-cols-2">
           {[
             { k: t.sFocus, v: ls(settings, "focus", locale) },
             { k: t.sAffiliation, v: ls(settings, "affiliation", locale) },
-            { k: t.sActiveSince, v: settings.since },
           ].map((x) => (
             <div key={x.k}>
               <div className="eyebrow mb-1">{x.k}</div>
