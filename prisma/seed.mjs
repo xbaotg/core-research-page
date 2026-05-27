@@ -108,6 +108,36 @@ const members = [
     category: "member",
     order: 5,
   },
+  {
+    name: "Duy-Dinh Le",
+    title: "Assoc. Prof.",
+    // NOTE: placeholder role (ranked above the PI). Adjust to taste —
+    // e.g. "Director", "Head of Lab", "Founding Director", "Scientific Director".
+    role: "Lab Director · Computer Vision & Multimedia Retrieval",
+    affiliation: UIT,
+    bio: "Senior faculty at UIT, VNU-HCM and director of CORE Lab; research spans computer vision, multimedia retrieval and large-scale video search, with long-standing collaboration with the National Institute of Informatics (NII), Japan.",
+    email: "duyld@uit.edu.vn",
+    photo: "",
+    links: JSON.stringify({ scholar: "", homepage: "", github: "" }),
+    category: "faculty",
+    order: -1,
+  },
+  {
+    name: "Shin'ichi Satoh",
+    title: "Prof.",
+    role: "Collaborating Professor · NII, Japan",
+    affiliation: "National Institute of Informatics (NII), Japan",
+    bio: "Professor at the National Institute of Informatics (NII), Tokyo; long-term collaborator with CORE Lab on large-scale video retrieval and multimedia analysis.",
+    email: "satoh@nii.ac.jp",
+    photo: "/shinichi-satoh.jpg",
+    links: JSON.stringify({
+      scholar: "https://scholar.google.com/citations?user=7aEF5cQAAAAJ",
+      homepage: "",
+      github: "",
+    }),
+    category: "collaborator",
+    order: 0,
+  },
 ];
 
 const ivrFigures = [

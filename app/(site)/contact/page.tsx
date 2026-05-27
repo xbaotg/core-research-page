@@ -12,7 +12,7 @@ export default async function ContactPage() {
     getI18n(),
     getSettings(),
     prisma.member.findFirst({
-      where: { category: "faculty" },
+      where: { role: { contains: "Principal Investigator" } },
       orderBy: { order: "asc" },
     }),
   ]);

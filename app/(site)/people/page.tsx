@@ -40,6 +40,7 @@ export default async function PeoplePage() {
 
   const GROUPS = [
     { key: "faculty", label: t.grpFaculty },
+    { key: "collaborator", label: t.grpCollaborator },
     { key: "member", label: t.grpMember },
     { key: "student", label: t.grpStudent },
     { key: "alumni", label: t.grpAlumni },
@@ -68,8 +69,8 @@ export default async function PeoplePage() {
           return (
             <section key={g.key}>
               <div className="eyebrow mb-6">{g.label}</div>
-              {g.key === "faculty" ? (
-                /* Highlighted faculty / advisors — larger feature cards */
+              {g.key === "faculty" || g.key === "collaborator" ? (
+                /* Highlighted faculty / advisors / collaborators — larger feature cards */
                 <div className="grid gap-6 md:grid-cols-2">
                   {list.map((m) => (
                     <div

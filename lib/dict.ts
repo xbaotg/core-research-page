@@ -55,6 +55,7 @@ export const dict = {
     // people
     peopleSubtitle: "Faculty, researchers and students behind CORE Lab.",
     grpFaculty: "Faculty & Advisors",
+    grpCollaborator: "Collaborating Professors",
     grpMember: "Research Members",
     grpStudent: "Students",
     grpAlumni: "Alumni",
@@ -211,6 +212,7 @@ export const dict = {
 
     peopleSubtitle: "Giảng viên, nghiên cứu viên và sinh viên của CORE Lab.",
     grpFaculty: "Giảng viên & Cố vấn",
+    grpCollaborator: "Giáo sư cộng tác",
     grpMember: "Nghiên cứu viên",
     grpStudent: "Sinh viên",
     grpAlumni: "Cựu thành viên",
