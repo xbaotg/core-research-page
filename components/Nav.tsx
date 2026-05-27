@@ -22,6 +22,7 @@ export default function Nav({
     { href: "/", label: t.navHome },
     { href: "/people", label: t.navPeople },
     { href: "/publications", label: t.navPublications },
+    { href: "/datasets", label: t.navDatasets },
     { href: "/awards", label: t.navAwards },
     { href: "/conferences", label: t.navConferences },
     { href: "/contact", label: t.navContact },

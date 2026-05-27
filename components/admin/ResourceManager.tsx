@@ -194,6 +194,43 @@ const CONFIG: Record<string, Cfg> = {
     }),
   },
 
+  datasets: {
+    singular: "dataset",
+    fields: [
+      { name: "name", label: "Name", full: true },
+      { name: "slug", label: "URL slug (blank = auto from name)", full: true },
+      { name: "tagline", label: "Tagline", full: true },
+      { name: "modality", label: "Modality (e.g. Image + Text)" },
+      { name: "task", label: "Task" },
+      { name: "year", label: "Year", type: "number" },
+      { name: "featured", label: "Featured", type: "checkbox" },
+      { name: "order", label: "Sort order", type: "number" },
+      { name: "description", label: "Description", type: "textarea", full: true },
+      { name: "license", label: "License & access", type: "textarea", full: true },
+      {
+        name: "stats",
+        label: 'Stats — JSON array of { label, value }',
+        type: "textarea",
+        full: true,
+        placeholder: '[{"label":"Images","value":"2,104"},{"label":"Text instances","value":"79,849"}]',
+      },
+      {
+        name: "samples",
+        label: 'Samples — JSON array of { src, caption, texts[] }',
+        type: "textarea",
+        full: true,
+        placeholder: '[{"src":"/datasets/foo/1.jpg","caption":"...","texts":["text 1","text 2"]}]',
+      },
+      { name: "driveUrl", label: "Explore / download URL" },
+      { name: "paperUrl", label: "Paper URL" },
+      { name: "codeUrl", label: "Code URL" },
+    ],
+    summary: (r) => ({
+      title: r.name,
+      sub: [r.modality, r.task, r.year].filter(Boolean).join(" · "),
+    }),
+  },
+
   news: {
     singular: "news item",
     fields: [

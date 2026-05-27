@@ -31,7 +31,13 @@ const slugify = (s: string) =>
     .replace(/^-+|-+$/g, "")
     .slice(0, 80);
 
-export type ResourceKey = "members" | "publications" | "conferences" | "awards" | "news";
+export type ResourceKey =
+  | "members"
+  | "publications"
+  | "conferences"
+  | "awards"
+  | "datasets"
+  | "news";
 
 type ResourceConfig = {
   // prisma delegate (typed loosely on purpose for the generic handler)
@@ -121,6 +127,37 @@ export const RESOURCES: Record<ResourceKey, ResourceConfig> = {
       featured: bool(b.featured),
       order: intDefault(b.order),
     }),
+  },
+  datasets: {
+    delegate: prisma.dataset,
+    orderBy: [{ featured: "desc" }, { order: "asc" }],
+    parse: (b) => {
+      const name = str(b.name);
+      const slug = strOrNull(b.slug) || slugify(name) || null;
+      const jsonOr = (v: unknown) =>
+        typeof v === "string" && v.trim()
+          ? v
+          : Array.isArray(v)
+            ? JSON.stringify(v)
+            : "[]";
+      return {
+        name,
+        slug,
+        tagline: strOrNull(b.tagline),
+        description: strOrNull(b.description),
+        modality: strOrNull(b.modality),
+        task: strOrNull(b.task),
+        year: intOrNull(b.year),
+        license: strOrNull(b.license),
+        stats: jsonOr(b.stats),
+        samples: jsonOr(b.samples),
+        driveUrl: strOrNull(b.driveUrl),
+        paperUrl: strOrNull(b.paperUrl),
+        codeUrl: strOrNull(b.codeUrl),
+        featured: bool(b.featured),
+        order: intDefault(b.order),
+      };
+    },
   },
   news: {
     delegate: prisma.news,

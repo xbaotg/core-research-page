@@ -11,6 +11,7 @@ export const dict = {
     navPublications: "Publications",
     navConferences: "Conferences",
     navAwards: "Awards",
+    navDatasets: "Datasets",
     navContact: "Contact",
 
     // common
@@ -106,6 +107,22 @@ export const dict = {
     awFirstPrizes: "First prizes",
     awYears: "Years active",
     awEmpty: "No awards yet.",
+    datasetsEyebrow: "Open data",
+    datasetsTitle: "Datasets",
+    datasetsSubtitle:
+      "Datasets we have published — explore a few samples, then request the full release.",
+    dsAbout: "About",
+    dsSamples: "Samples",
+    dsExplore: "Explore full dataset ↗",
+    dsPaper: "Paper ↗",
+    dsCode: "Code ↗",
+    dsLicense: "License & access",
+    dsDetected: "Recognized text",
+    dsShow: "Show text",
+    dsHide: "Hide text",
+    dsRegion: "regions",
+    dsView: "View dataset",
+    dsEmpty: "No datasets yet.",
 
     // countdown
     cdDays: "Days",
@@ -142,6 +159,7 @@ export const dict = {
     navPublications: "Công bố",
     navConferences: "Hội nghị",
     navAwards: "Giải thưởng",
+    navDatasets: "Bộ dữ liệu",
     navContact: "Liên hệ",
 
     featured: "Nổi bật",
@@ -230,6 +248,22 @@ export const dict = {
     awFirstPrizes: "Giải Nhất",
     awYears: "Năm hoạt động",
     awEmpty: "Chưa có giải thưởng.",
+    datasetsEyebrow: "Dữ liệu mở",
+    datasetsTitle: "Bộ dữ liệu",
+    datasetsSubtitle:
+      "Các bộ dữ liệu chúng tôi đã công bố — xem một vài mẫu, sau đó yêu cầu bản đầy đủ.",
+    dsAbout: "Giới thiệu",
+    dsSamples: "Mẫu dữ liệu",
+    dsExplore: "Khám phá toàn bộ dữ liệu ↗",
+    dsPaper: "Bài báo ↗",
+    dsCode: "Mã nguồn ↗",
+    dsLicense: "Giấy phép & truy cập",
+    dsDetected: "Văn bản nhận dạng",
+    dsShow: "Hiện văn bản",
+    dsHide: "Ẩn văn bản",
+    dsRegion: "vùng",
+    dsView: "Xem bộ dữ liệu",
+    dsEmpty: "Chưa có bộ dữ liệu.",
 
     cdDays: "Ngày",
     cdHrs: "Giờ",

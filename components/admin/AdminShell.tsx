@@ -10,6 +10,7 @@ const NAV = [
   { href: "/admin/publications", label: "Publications" },
   { href: "/admin/conferences", label: "Conferences" },
   { href: "/admin/awards", label: "Awards" },
+  { href: "/admin/datasets", label: "Datasets" },
   { href: "/admin/news", label: "News" },
   { href: "/admin/settings", label: "Site settings" },
 ];

@@ -79,6 +79,26 @@ model Award {
   createdAt   DateTime @default(now())
 }
 
+model Dataset {
+  id          Int      @id @default(autoincrement())
+  name        String
+  slug        String?  @unique
+  tagline     String?  // short one-liner
+  description String?  // longer overview
+  modality    String?  // e.g. "Image + Text"
+  task        String?  // e.g. "Scene-text detection & recognition"
+  year        Int?
+  license     String?
+  stats       String   @default("[]") // JSON: [{ label, value }]
+  samples     String   @default("[]") // JSON: [{ src, label, boxes:[{ x, y, w, h, text, color }] }]
+  driveUrl    String?  // explore / download link
+  paperUrl    String?
+  codeUrl     String?
+  featured    Boolean  @default(false)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+}
+
 model News {
   id        Int      @id @default(autoincrement())
   title     String

@@ -17,6 +17,7 @@ export default function SiteFooter({
       links: [
         { href: "/people", label: t.navPeople },
         { href: "/publications", label: t.navPublications },
+        { href: "/datasets", label: t.navDatasets },
         { href: "/conferences", label: t.navConferences },
       ],
     },
