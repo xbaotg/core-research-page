@@ -347,6 +347,42 @@ summary {
   to   { transform: translate(-6rem, 6rem) scale(1.12); }
 }
 
+/* Hero computer-vision motif (HeroVisual.tsx) */
+.hv-scan {
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in oklab, var(--color-accent-blue) 26%, transparent),
+    transparent
+  );
+  animation: hv-scan 3.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+@keyframes hv-scan {
+  0%   { top: -16%; opacity: 0; }
+  14%  { opacity: 1; }
+  86%  { opacity: 1; }
+  100% { top: 104%; opacity: 0; }
+}
+.hv-box-draw {
+  stroke-dasharray: 600;
+  stroke-dashoffset: 600;
+  animation: hv-draw 0.9s ease forwards;
+  animation-delay: var(--d, 0s);
+}
+@keyframes hv-draw { to { stroke-dashoffset: 0; } }
+.hv-box-label {
+  opacity: 0;
+  transform: translateY(4px);
+  animation: hv-pop 0.4s ease forwards;
+  animation-delay: var(--d, 0s);
+}
+@keyframes hv-pop { to { opacity: 1; transform: none; } }
+.hv-kp {
+  animation: hv-twinkle 2.6s ease-in-out infinite alternate;
+  animation-delay: var(--d, 0s);
+}
+@keyframes hv-twinkle { from { opacity: 0.3; } to { opacity: 1; } }
+
 /* Dark band (conferences hero) → near-black */
 .sunset-mesh {
   background: var(--color-primary);
@@ -438,6 +474,16 @@ summary {
     transform: none;
     transition: none;
   }
+  .hv-scan,
+  .hv-kp,
+  .hv-box-draw,
+  .hv-box-label {
+    animation: none;
+  }
+  .hv-scan { display: none; }
+  .hv-box-draw { stroke-dashoffset: 0; }
+  .hv-box-label { opacity: 1; transform: none; }
+  .hv-kp { opacity: 0.8; }
   html {
     scroll-behavior: auto;
   }

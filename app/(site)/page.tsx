@@ -5,7 +5,8 @@ import { getSettings, nextDate, parseLinks } from "@/lib/data";
 import { getI18n, ls } from "@/lib/i18n";
 import { fmtDate } from "@/lib/format";
 import { asset } from "@/lib/basePath";
-import { Countdown } from "@/components/Countdown";
+import { MiniCountdown } from "@/components/Countdown";
+import HeroVisual from "@/components/HeroVisual";
 
 export default async function HomePage() {
   const [{ locale, t }, settings, featured, members, conferences, news] = await Promise.all([
@@ -67,43 +68,28 @@ export default async function HomePage() {
                 {t.heroCtaTeam}
               </Link>
             </div>
+
+            {soonest && (
+              <Link
+                href="/conferences"
+                className="reveal group mt-8 inline-flex flex-wrap items-center gap-x-3 gap-y-2 rounded-xl border border-hairline bg-canvas/60 px-4 py-2.5 backdrop-blur transition-colors hover:border-hairline-strong"
+                style={{ "--d": "0.62s" } as CSSProperties}
+              >
+                <span className="badge badge-orange">
+                  {soonest.kind === "deadline" ? t.badgeDeadline : t.badgeConference}
+                </span>
+                <span className="text-sm font-medium text-ink">
+                  {soonest.conf.name}
+                  <span className="text-stone"> · {fmtDate(soonest.date)}</span>
+                </span>
+                <MiniCountdown iso={soonest.date!.toISOString()} locale={locale} />
+              </Link>
+            )}
           </div>
 
-          {/* Next deadline countdown card */}
+          {/* Computer-vision hero visual */}
           <div className="reveal self-center" style={{ "--d": "0.3s" } as CSSProperties}>
-            {soonest ? (
-              <div className="rounded-xl border border-hairline bg-canvas p-6 shadow-layered sm:p-8">
-                <div className="flex items-center justify-between">
-                  <span className="eyebrow">{t.nextUp}</span>
-                  <span className="badge badge-orange">
-                    {soonest.kind === "deadline" ? t.badgeDeadline : t.badgeConference}
-                  </span>
-                </div>
-                <div className="mt-2 font-display text-3xl text-ink">
-                  {soonest.conf.name} <span className="text-stone">{soonest.conf.location}</span>
-                </div>
-                <p className="mt-1 text-sm text-steel">
-                  {soonest.kind === "deadline" ? t.submissionCloses : t.starts}{" "}
-                  {fmtDate(soonest.date)}
-                </p>
-                <div className="mt-6">
-                  <Countdown iso={soonest.date!.toISOString()} kind={soonest.kind} locale={locale} />
-                </div>
-                <Link
-                  href="/conferences"
-                  className="mt-6 inline-block text-sm font-medium text-link hover:underline"
-                >
-                  {t.allConfDeadlines}
-                </Link>
-              </div>
-            ) : (
-              <div className="rounded-xl border border-hairline bg-canvas p-8 text-ink">
-                <p className="font-display text-2xl">{t.noUpcoming}</p>
-                <Link href="/conferences" className="mt-3 inline-block text-link">
-                  {t.manageConferences}
-                </Link>
-              </div>
-            )}
+            <HeroVisual />
           </div>
         </div>
       </section>
