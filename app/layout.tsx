@@ -30,6 +30,7 @@ export const metadata: Metadata = {
   creator: SITE_NAME,
   publisher: SITE_NAME,
   category: "technology",
+  verification: { google: "03l0ynFLm-qnF_rZz3Nr-dY7U5kJTE42l9PwvFgA4Qk" },
   alternates: { canonical: "/" },
   robots: {
     index: true,

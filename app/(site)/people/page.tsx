@@ -68,39 +68,77 @@ export default async function PeoplePage() {
           return (
             <section key={g.key}>
               <div className="eyebrow mb-6">{g.label}</div>
-              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {list.map((m) => (
-                  <div key={m.id} className="card-feature">
-                    <div className="flex items-center gap-4">
+              {g.key === "faculty" ? (
+                /* Highlighted faculty / advisors — larger feature cards */
+                <div className="grid gap-6 md:grid-cols-2">
+                  {list.map((m) => (
+                    <div
+                      key={m.id}
+                      className="card-feature flex flex-col gap-5 shadow-layered ring-1 ring-hairline-strong sm:flex-row sm:items-start"
+                    >
                       <div
-                        className="grid h-16 w-16 shrink-0 place-items-center rounded-full font-display text-2xl text-on-primary"
+                        className="grid h-24 w-24 shrink-0 place-items-center rounded-2xl font-display text-3xl text-on-primary"
                         style={{
                           background: m.photo
                             ? `center/cover url(${asset(m.photo)})`
-                            : "linear-gradient(135deg, var(--color-sunshine-700), var(--color-primary))",
+                            : "linear-gradient(135deg, var(--color-accent-blue), var(--color-primary))",
                         }}
                       >
                         {!m.photo && m.name.charAt(0)}
                       </div>
-                      <div>
-                        <div className="text-lg font-medium text-ink">
+                      <div className="min-w-0 flex-1">
+                        <div className="font-display text-2xl leading-tight text-ink">
                           {m.title ? `${m.title} ` : ""}
                           {m.name}
                         </div>
-                        {m.role && <div className="text-sm text-steel">{m.role}</div>}
+                        {m.role && <div className="mt-0.5 text-sm font-medium text-steel">{m.role}</div>}
+                        {m.affiliation && <p className="mt-3 text-sm text-slate">{m.affiliation}</p>}
+                        {m.bio && <p className="mt-2 text-sm leading-relaxed text-steel">{m.bio}</p>}
+                        {m.email && (
+                          <a href={`mailto:${m.email}`} className="mt-3 block text-sm text-link hover:underline">
+                            {m.email}
+                          </a>
+                        )}
+                        <LinkRow raw={m.links} labels={linkLabels} />
                       </div>
                     </div>
-                    {m.affiliation && <p className="mt-4 text-sm text-slate">{m.affiliation}</p>}
-                    {m.bio && <p className="mt-2 text-sm leading-relaxed text-steel">{m.bio}</p>}
-                    {m.email && (
-                      <a href={`mailto:${m.email}`} className="mt-3 block text-sm text-link hover:underline">
-                        {m.email}
-                      </a>
-                    )}
-                    <LinkRow raw={m.links} labels={linkLabels} />
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {list.map((m) => (
+                    <div key={m.id} className="card-feature">
+                      <div className="flex items-center gap-4">
+                        <div
+                          className="grid h-16 w-16 shrink-0 place-items-center rounded-full font-display text-2xl text-on-primary"
+                          style={{
+                            background: m.photo
+                              ? `center/cover url(${asset(m.photo)})`
+                              : "linear-gradient(135deg, var(--color-accent-blue), var(--color-primary))",
+                          }}
+                        >
+                          {!m.photo && m.name.charAt(0)}
+                        </div>
+                        <div>
+                          <div className="text-lg font-medium text-ink">
+                            {m.title ? `${m.title} ` : ""}
+                            {m.name}
+                          </div>
+                          {m.role && <div className="text-sm text-steel">{m.role}</div>}
+                        </div>
+                      </div>
+                      {m.affiliation && <p className="mt-4 text-sm text-slate">{m.affiliation}</p>}
+                      {m.bio && <p className="mt-2 text-sm leading-relaxed text-steel">{m.bio}</p>}
+                      {m.email && (
+                        <a href={`mailto:${m.email}`} className="mt-3 block text-sm text-link hover:underline">
+                          {m.email}
+                        </a>
+                      )}
+                      <LinkRow raw={m.links} labels={linkLabels} />
+                    </div>
+                  ))}
+                </div>
+              )}
             </section>
           );
         })}
