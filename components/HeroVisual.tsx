@@ -1,18 +1,68 @@
 import type { CSSProperties } from "react";
 
-/**
- * Decorative "computer-vision" hero motif: a viewfinder frame with detection
- * boxes drawing in + labels, a keypoint feature graph, and a sweeping scan line.
- * Pure SVG + CSS (animations live in globals.css, .hv-*). No client JS.
- */
-const box = (d: string): CSSProperties => ({ ["--d" as string]: d });
+const d = (v: string): CSSProperties => ({ ["--d" as string]: v });
 
-export default function HeroVisual() {
+const COLORS = {
+  blue: "#3b89ff",
+  pink: "#ed52cb",
+  orange: "#ff8105",
+  purple: "#7a3dff",
+};
+
+// Four corner brackets for a detection box (pro tracker look).
+function Box({
+  x,
+  y,
+  w,
+  h,
+  color,
+  delay,
+  len = 16,
+}: {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  color: string;
+  delay: string;
+  len?: number;
+}) {
+  const sw = 2.5;
   return (
-    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-hairline bg-canvas shadow-layered">
-      {/* sweeping scan line */}
-      <div className="hv-scan pointer-events-none absolute inset-x-0 top-0 h-16" aria-hidden />
+    <g className="hv2-box" style={{ color, ...d(delay) }}>
+      <rect x={x} y={y} width={w} height={h} rx={4} fill={color} opacity={0.07} />
+      <path d={`M${x} ${y + len} V${y} H${x + len}`} stroke="currentColor" strokeWidth={sw} strokeLinecap="round" />
+      <path d={`M${x + w - len} ${y} H${x + w} V${y + len}`} stroke="currentColor" strokeWidth={sw} strokeLinecap="round" />
+      <path d={`M${x + w} ${y + h - len} V${y + h} H${x + w - len}`} stroke="currentColor" strokeWidth={sw} strokeLinecap="round" />
+      <path d={`M${x + len} ${y + h} H${x} V${y + h - len}`} stroke="currentColor" strokeWidth={sw} strokeLinecap="round" />
+    </g>
+  );
+}
 
+function Label({ x, y, text, color, delay }: { x: number; y: number; text: string; color: string; delay: string }) {
+  const w = text.length * 6.6 + 26;
+  return (
+    <g className="hv2-label" style={d(delay)}>
+      <rect x={x} y={y} width={w} height={19} rx={4} fill={color} />
+      <circle className="hv2-blink" cx={x + 11} cy={y + 9.6} r={3} fill="#fff" />
+      <text x={x + 20} y={y + 13.6} fontSize={11} fontWeight={700} fill="#fff" fontFamily="monospace">
+        {text}
+      </text>
+    </g>
+  );
+}
+
+/**
+ * Hero "vision HUD" — a dark detector screen with a gradient-glow frame:
+ * corner-bracket detection boxes drawing in, a keypoint constellation,
+ * a glowing scan sweep and a small live-HUD overlay. SVG + CSS, no JS.
+ */
+export default function HeroVisual() {
+  const nodes = [
+    [60, 80], [120, 130], [100, 202], [180, 226], [250, 160], [322, 108], [296, 202],
+  ];
+  return (
+    <div className="hv2-frame relative aspect-[4/3] w-full overflow-hidden rounded-2xl">
       <svg
         viewBox="0 0 420 320"
         className="absolute inset-0 h-full w-full"
@@ -21,93 +71,68 @@ export default function HeroVisual() {
         aria-label="Computer vision detection visualization"
       >
         <defs>
-          <pattern id="hv-dots" width="22" height="22" patternUnits="userSpaceOnUse">
-            <circle cx="1.5" cy="1.5" r="1.5" fill="var(--color-hairline)" />
-          </pattern>
-          <linearGradient id="hv-edge" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stopColor="var(--color-accent-blue)" />
-            <stop offset="1" stopColor="var(--color-accent-purple)" />
+          <linearGradient id="hv2bg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stopColor="#0a0f1a" />
+            <stop offset="1" stopColor="#141f31" />
           </linearGradient>
+          <radialGradient id="hv2glowA" cx="0.28" cy="0.26" r="0.6">
+            <stop offset="0" stopColor="#3b89ff" stopOpacity="0.38" />
+            <stop offset="1" stopColor="#3b89ff" stopOpacity="0" />
+          </radialGradient>
+          <radialGradient id="hv2glowB" cx="0.82" cy="0.84" r="0.6">
+            <stop offset="0" stopColor="#ed52cb" stopOpacity="0.32" />
+            <stop offset="1" stopColor="#ed52cb" stopOpacity="0" />
+          </radialGradient>
+          <pattern id="hv2grid" width="30" height="30" patternUnits="userSpaceOnUse">
+            <path d="M30 0H0V30" fill="none" stroke="#ffffff" strokeOpacity="0.05" strokeWidth="1" />
+          </pattern>
         </defs>
 
-        {/* feature-dot field */}
-        <rect x="0" y="0" width="420" height="320" fill="url(#hv-dots)" opacity="0.6" />
+        <rect width="420" height="320" fill="url(#hv2bg)" />
+        <rect width="420" height="320" fill="url(#hv2glowA)" />
+        <rect width="420" height="320" fill="url(#hv2glowB)" />
+        <rect width="420" height="320" fill="url(#hv2grid)" />
 
         {/* keypoint feature graph */}
-        <g className="hv-kp" stroke="var(--color-accent-purple)" strokeWidth="1" opacity="0.5">
-          <polyline
-            points="70,90 130,140 110,210 190,235 250,170 320,120 300,210"
-            fill="none"
-            strokeDasharray="3 5"
-          />
-        </g>
-        <g fill="var(--color-accent-purple)">
-          {[
-            [70, 90], [130, 140], [110, 210], [190, 235], [250, 170], [320, 120], [300, 210],
-          ].map(([cx, cy], i) => (
-            <circle
-              key={i}
-              className="hv-kp"
-              cx={cx}
-              cy={cy}
-              r="3.5"
-              style={box(`${i * 0.25}s`)}
-            />
-          ))}
-        </g>
+        <polyline
+          className="hv2-net"
+          points="60,80 120,130 100,202 180,226 250,160 322,108 296,202"
+          fill="none"
+          stroke={COLORS.purple}
+          strokeWidth="1"
+          strokeOpacity="0.55"
+        />
+        {nodes.map(([cx, cy], i) => (
+          <circle key={i} className="hv2-node" cx={cx} cy={cy} r="3" fill={COLORS.blue} style={d(`${i * 0.2}s`)} />
+        ))}
 
-        {/* viewfinder corner brackets */}
-        <g stroke="var(--color-ink)" strokeWidth="3" strokeLinecap="round" opacity="0.85">
-          <path d="M22 44 V22 H44" />
-          <path d="M398 44 V22 H376" />
-          <path d="M22 276 V298 H44" />
-          <path d="M398 276 V298 H376" />
-        </g>
+        {/* detection boxes */}
+        <Box x={48} y={70} w={118} h={158} color={COLORS.blue} delay="0.2s" />
+        <Box x={238} y={150} w={150} h={60} color={COLORS.orange} delay="0.45s" />
+        <Box x={250} y={86} w={92} h={74} color={COLORS.pink} delay="0.7s" />
 
-        {/* detection boxes (borders draw in, labels pop) */}
-        <g>
-          <rect
-            className="hv-box-draw"
-            x="56" y="74" width="120" height="150" rx="6"
-            stroke="var(--color-accent-blue)" strokeWidth="2.5"
-            style={box("0.2s")}
-          />
-          <g className="hv-box-label" style={box("0.7s")}>
-            <rect x="56" y="58" width="64" height="18" rx="3" fill="var(--color-accent-blue)" />
-            <text x="62" y="71" fontSize="11" fontWeight="700" fill="#fff" fontFamily="monospace">
-              track · 2
-            </text>
-          </g>
-        </g>
-        <g>
-          <rect
-            className="hv-box-draw"
-            x="214" y="150" width="150" height="58" rx="6"
-            stroke="var(--color-accent-orange)" strokeWidth="2.5"
-            style={box("0.5s")}
-          />
-          <g className="hv-box-label" style={box("1s")}>
-            <rect x="214" y="134" width="86" height="18" rx="3" fill="var(--color-accent-orange)" />
-            <text x="220" y="147" fontSize="11" fontWeight="700" fill="#fff" fontFamily="monospace">
-              scene-text
-            </text>
-          </g>
-        </g>
-        <g>
-          <rect
-            className="hv-box-draw"
-            x="246" y="92" width="96" height="74" rx="6"
-            stroke="var(--color-accent-pink)" strokeWidth="2.5"
-            style={box("0.8s")}
-          />
-          <g className="hv-box-label" style={box("1.3s")}>
-            <rect x="246" y="76" width="64" height="18" rx="3" fill="var(--color-accent-pink)" />
-            <text x="252" y="89" fontSize="11" fontWeight="700" fill="#fff" fontFamily="monospace">
-              object
-            </text>
-          </g>
-        </g>
+        <Label x={48} y={51} text="track · 2" color={COLORS.blue} delay="0.7s" />
+        <Label x={238} y={131} text="scene-text" color={COLORS.orange} delay="0.95s" />
+        <Label x={250} y={67} text="object 0.94" color={COLORS.pink} delay="1.2s" />
       </svg>
+
+      {/* glowing scan sweep */}
+      <span className="hv2-scan pointer-events-none absolute inset-x-0 top-0 h-1/4" aria-hidden />
+
+      {/* live HUD overlay */}
+      <div className="pointer-events-none absolute inset-0 flex flex-col justify-between p-3 font-mono text-[10px] uppercase tracking-widest text-white/70">
+        <div className="flex items-center justify-between">
+          <span>CORE · vision</span>
+          <span className="flex items-center gap-1.5">
+            <span className="hv2-blink inline-block h-1.5 w-1.5 rounded-full bg-[#ff5470]" />
+            rec
+          </span>
+        </div>
+        <div className="flex items-center justify-between">
+          <span>detecting text &amp; objects</span>
+          <span className="text-white/50">realtime</span>
+        </div>
+      </div>
     </div>
   );
 }

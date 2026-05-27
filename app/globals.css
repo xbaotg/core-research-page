@@ -383,6 +383,57 @@ summary {
 }
 @keyframes hv-twinkle { from { opacity: 0.3; } to { opacity: 1; } }
 
+/* Hero vision HUD (HeroVisual.tsx) */
+.hv2-frame {
+  background: #0a0f1a;
+  box-shadow: 0 26px 64px -14px rgba(0, 0, 0, 0.55);
+}
+.hv2-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    140deg,
+    rgba(59, 137, 255, 0.7),
+    rgba(122, 61, 255, 0.25),
+    rgba(237, 82, 203, 0.6)
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.hv2-box {
+  opacity: 0;
+  animation: hv2-fade 0.55s ease forwards;
+  animation-delay: var(--d, 0s);
+  filter: drop-shadow(0 0 4px currentColor);
+}
+.hv2-label {
+  opacity: 0;
+  animation: hv2-fade 0.45s ease forwards;
+  animation-delay: var(--d, 0s);
+}
+@keyframes hv2-fade { to { opacity: 1; } }
+.hv2-node {
+  animation: hv-twinkle 2.6s ease-in-out infinite alternate;
+  animation-delay: var(--d, 0s);
+}
+.hv2-net {
+  stroke-dasharray: 4 6;
+  animation: hv2-dash 6s linear infinite;
+}
+@keyframes hv2-dash { to { stroke-dashoffset: -40; } }
+.hv2-blink { animation: hv2-blink 1.3s steps(1, end) infinite; }
+@keyframes hv2-blink { 0%, 60% { opacity: 1; } 61%, 100% { opacity: 0.25; } }
+.hv2-scan {
+  background: linear-gradient(180deg, transparent, rgba(59, 137, 255, 0.45), transparent);
+  mix-blend-mode: screen;
+  animation: hv-scan 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
 /* Dataset gallery (DatasetGallery.tsx) */
 .ds-scan,
 .ds-scan-run {
@@ -505,6 +556,17 @@ summary {
   .hv-kp { opacity: 0.8; }
   .ds-scan-run { display: none; }
   .ds-chip { opacity: 1; animation: none; }
+  .hv2-box,
+  .hv2-label {
+    opacity: 1;
+    animation: none;
+  }
+  .hv2-node,
+  .hv2-net,
+  .hv2-blink {
+    animation: none;
+  }
+  .hv2-scan { display: none; }
   html {
     scroll-behavior: auto;
   }
