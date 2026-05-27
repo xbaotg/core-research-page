@@ -73,9 +73,9 @@ export default function HeroVisual() {
             style={box("0.2s")}
           />
           <g className="hv-box-label" style={box("0.7s")}>
-            <rect x="56" y="58" width="92" height="18" rx="3" fill="var(--color-accent-blue)" />
+            <rect x="56" y="58" width="64" height="18" rx="3" fill="var(--color-accent-blue)" />
             <text x="62" y="71" fontSize="11" fontWeight="700" fill="#fff" fontFamily="monospace">
-              person 0.98
+              track · 2
             </text>
           </g>
         </g>

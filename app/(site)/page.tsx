@@ -152,11 +152,12 @@ export default async function HomePage() {
         <h2 className="font-display text-4xl text-ink">{t.areasHeading}</h2>
         <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {[
-            { cls: "cat-purple", n: "01", title: "Computer Vision", desc: "Visual recognition, representation learning and detection." },
-            { cls: "cat-blue", n: "02", title: "Interactive Video Retrieval", desc: "Real-time, multimodal search over large video archives." },
-            { cls: "cat-pink", n: "03", title: "Multimodal Learning", desc: "Vision–language fusion across text, speech and objects." },
-            { cls: "cat-orange", n: "04", title: "Scene Text & OCR", desc: "Reading text in images and broadcast video." },
-            { cls: "cat-green", n: "05", title: "Multimedia Indexing", desc: "Scalable indexing and content-based retrieval." },
+            { cls: "cat-purple", n: "01", title: "Computer Vision", desc: "Visual recognition, detection and representation learning." },
+            { cls: "cat-blue", n: "02", title: "Image & Video Retrieval", desc: "Real-time, large-scale search over image and video archives." },
+            { cls: "cat-pink", n: "03", title: "Multimodal & Multimedia", desc: "Vision–language fusion across text, speech and audio." },
+            { cls: "cat-orange", n: "04", title: "Scene Text Recognition", desc: "Reading text in images, signage and broadcast video." },
+            { cls: "cat-green", n: "05", title: "Multi-Agent Tracking", desc: "Tracking many objects across frames and camera views." },
+            { cls: "cat-blue", n: "06", title: "Conversational Image Retrieval", desc: "Interactive, dialogue-driven search for the right image." },
           ].map((c, i) => (
             <div
               key={c.n}
