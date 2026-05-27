@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { getSettings, nextDate, parseLinks } from "@/lib/data";
@@ -28,23 +29,37 @@ export default async function HomePage() {
     <>
       {/* ============ HERO ============ */}
       <section className="hero-sunset relative overflow-hidden">
-        <div className="container-core grid gap-10 py-20 md:grid-cols-[1.1fr_0.9fr] md:py-28">
-          <div className="rise">
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full bg-ink/10 px-3 py-1 text-xs font-semibold text-ink">
+        <div className="hero-aurora" aria-hidden />
+        <div className="container-core relative z-10 grid gap-10 py-20 md:grid-cols-[1.1fr_0.9fr] md:py-28">
+          <div>
+            <div
+              className="reveal mb-5 inline-flex items-center gap-2 rounded-full bg-ink/10 px-3 py-1 text-xs font-semibold text-ink"
+              style={{ "--d": "0.05s" } as CSSProperties}
+            >
               <span className="h-1.5 w-1.5 rounded-full bg-primary-deep" />
               {settings.heroKicker}
             </div>
             <h1 className="font-display text-5xl leading-[1.04] tracking-tight text-ink sm:text-6xl lg:text-7xl">
               {heroLines.map((l, i) => (
-                <span key={i} className="block">
+                <span
+                  key={i}
+                  className="reveal block"
+                  style={{ "--d": `${0.15 + i * 0.09}s` } as CSSProperties}
+                >
                   {l}
                 </span>
               ))}
             </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink-tint">
+            <p
+              className="reveal mt-6 max-w-xl text-lg leading-relaxed text-ink-tint"
+              style={{ "--d": "0.42s" } as CSSProperties}
+            >
               {ls(settings, "heroSubtitle", locale)}
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div
+              className="reveal mt-8 flex flex-wrap gap-3"
+              style={{ "--d": "0.52s" } as CSSProperties}
+            >
               <Link href="/publications" className="btn btn-dark">
                 {t.heroCtaResearch}
               </Link>
@@ -55,7 +70,7 @@ export default async function HomePage() {
           </div>
 
           {/* Next deadline countdown card */}
-          <div className="rise self-center">
+          <div className="reveal self-center" style={{ "--d": "0.3s" } as CSSProperties}>
             {soonest ? (
               <div className="rounded-xl border border-hairline bg-canvas p-6 shadow-layered sm:p-8">
                 <div className="flex items-center justify-between">
