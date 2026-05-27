@@ -1,5 +1,6 @@
 import Nav from "@/components/Nav";
 import SiteFooter from "@/components/SiteFooter";
+import ScrollReveal from "@/components/ScrollReveal";
 import { getSettings } from "@/lib/data";
 import { getLocale } from "@/lib/i18n";
 
@@ -14,6 +15,7 @@ export default async function SiteLayout({
   return (
     <>
       <Nav labName={settings.labName} locale={locale} />
+      <ScrollReveal />
       <main className="flex-1">{children}</main>
       <SiteFooter settings={settings} locale={locale} />
     </>

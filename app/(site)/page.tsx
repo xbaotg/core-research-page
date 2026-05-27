@@ -110,7 +110,7 @@ export default async function HomePage() {
 
       {/* ============ FOCUS STRIP ============ */}
       <section className="border-b border-hairline-soft bg-surface">
-        <div className="container-core grid gap-6 py-10 sm:grid-cols-2">
+        <div className="reveal-scroll container-core grid gap-6 py-10 sm:grid-cols-2">
           {[
             { k: t.sFocus, v: ls(settings, "focus", locale) },
             { k: t.sAffiliation, v: ls(settings, "affiliation", locale) },
@@ -126,13 +126,13 @@ export default async function HomePage() {
       {/* ============ ABOUT + FEATURED PUBLICATION ============ */}
       <section className="container-core py-20 md:py-24">
         <div className="grid gap-12 md:grid-cols-[0.9fr_1.1fr]">
-          <div>
+          <div className="reveal-scroll">
             <div className="eyebrow mb-3">{t.aboutEyebrow}</div>
             <h2 className="font-display text-4xl leading-tight text-ink">{t.aboutHeading}</h2>
             <p className="mt-5 leading-relaxed text-slate">{ls(settings, "about", locale)}</p>
           </div>
 
-          <div>
+          <div className="reveal-scroll" style={{ "--rd": "0.12s" } as CSSProperties}>
             <div className="eyebrow mb-3">{t.featuredWork}</div>
             <div className="space-y-4">
               {featured.map((p) => (
@@ -171,8 +171,12 @@ export default async function HomePage() {
             { cls: "cat-pink", n: "03", title: "Multimodal Learning", desc: "Vision–language fusion across text, speech and objects." },
             { cls: "cat-orange", n: "04", title: "Scene Text & OCR", desc: "Reading text in images and broadcast video." },
             { cls: "cat-green", n: "05", title: "Multimedia Indexing", desc: "Scalable indexing and content-based retrieval." },
-          ].map((c) => (
-            <div key={c.n} className={`category-card ${c.cls}`}>
+          ].map((c, i) => (
+            <div
+              key={c.n}
+              className={`reveal-scroll category-card ${c.cls}`}
+              style={{ "--rd": `${i * 0.08}s` } as CSSProperties}
+            >
               <div className="text-sm font-semibold opacity-80">{c.n}</div>
               <div>
                 <div className="font-display text-2xl" style={{ color: "inherit" }}>
@@ -199,11 +203,12 @@ export default async function HomePage() {
           </div>
 
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {upcoming.slice(0, 4).map(({ conf, date, kind }) => (
+            {upcoming.slice(0, 4).map(({ conf, date, kind }, i) => (
               <Link
                 key={conf.id}
                 href="/conferences"
-                className="card block bg-canvas transition-shadow hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)]"
+                className="reveal-scroll card block bg-canvas transition-shadow hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)]"
+                style={{ "--rd": `${i * 0.07}s` } as CSSProperties}
               >
                 <div
                   className="mb-3 h-1 w-10 rounded-full"
@@ -233,10 +238,14 @@ export default async function HomePage() {
           </Link>
         </div>
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {members.map((m) => {
+          {members.map((m, i) => {
             const links = parseLinks(m.links);
             return (
-              <div key={m.id} className="card">
+              <div
+                key={m.id}
+                className="reveal-scroll card"
+                style={{ "--rd": `${i * 0.07}s` } as CSSProperties}
+              >
                 <div className="flex items-center gap-4">
                   <div
                     className="grid h-14 w-14 shrink-0 place-items-center rounded-full font-display text-xl text-on-primary"
@@ -280,7 +289,7 @@ export default async function HomePage() {
       <section className="bg-surface">
         <div className="container-core py-20 md:py-24">
           <div className="grid gap-12 md:grid-cols-[1fr_1fr]">
-            <div>
+            <div className="reveal-scroll">
               <div className="eyebrow mb-3">{t.newsEyebrow}</div>
               <h2 className="font-display text-4xl text-ink">{t.latest}</h2>
               <ul className="mt-8 space-y-6">
@@ -295,7 +304,7 @@ export default async function HomePage() {
               </ul>
             </div>
 
-            <div className="self-center">
+            <div className="reveal-scroll self-center" style={{ "--rd": "0.12s" } as CSSProperties}>
               <div className="card-cream">
                 <h3 className="font-display text-3xl leading-tight text-ink">{t.ctaHeading}</h3>
                 <p className="mt-3 text-slate">{t.ctaBody}</p>

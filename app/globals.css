@@ -406,6 +406,22 @@ summary {
   animation-delay: var(--d, 0s);
 }
 
+/* Scroll-triggered reveal (driven by ScrollReveal.tsx via IntersectionObserver).
+   Hidden state is scoped to .js-ready so content stays visible if JS never runs. */
+.js-ready .reveal-scroll {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transition-delay: var(--rd, 0s);
+  will-change: opacity, transform;
+}
+.js-ready .reveal-scroll.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .tick-anim,
   .rise,
@@ -416,8 +432,11 @@ summary {
     animation: none;
     transition: none;
   }
-  .reveal {
+  .reveal,
+  .js-ready .reveal-scroll {
     opacity: 1;
+    transform: none;
+    transition: none;
   }
   html {
     scroll-behavior: auto;
