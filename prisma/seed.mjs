@@ -11,7 +11,7 @@ const settings = {
   heroSubtitle:
     "A research group at the University of Information Technology, VNU-HCM. We build models that see, read, and retrieve — from multimodal interactive video retrieval to large-scale visual search.",
   about:
-    "CORE Lab is a computer-vision and information-retrieval research group at the University of Information Technology, VNU-HCM. Our work spans multimodal interactive video retrieval, vision-language representation learning, scene-text understanding and content-based retrieval at scale. We compete and publish at top venues — first place at the Video Browser Showdown (VBS) 2025 and three consecutive wins at the Ho Chi Minh AI Challenge.",
+    "CORE Lab is a computer-vision and information-retrieval research group founded in 2025 at the University of Information Technology, VNU-HCM. Our work spans multimodal interactive video retrieval, vision-language representation learning, scene-text understanding and content-based retrieval at scale. We compete and publish at top venues — first place at the Video Browser Showdown (VBS) 2025 and three consecutive wins at the Ho Chi Minh AI Challenge.",
   affiliation: "University of Information Technology, VNU-HCM",
   focus: "Computer Vision & Retrieval",
   since: "2025",
@@ -27,7 +27,7 @@ const settings = {
   heroSubtitle_vi:
     "Nhóm nghiên cứu tại Trường Đại học Công nghệ Thông tin, ĐHQG-HCM. Chúng tôi xây dựng các mô hình biết nhìn, đọc và truy xuất — từ truy hồi video tương tác đa phương thức đến tìm kiếm thị giác quy mô lớn.",
   about_vi:
-    "CORE Lab là nhóm nghiên cứu về thị giác máy tính và truy hồi thông tin tại Trường Đại học Công nghệ Thông tin, ĐHQG-HCM. Chúng tôi nghiên cứu truy hồi video tương tác đa phương thức, học biểu diễn thị giác–ngôn ngữ, hiểu văn bản trong ảnh và truy xuất theo nội dung ở quy mô lớn. Nhóm đạt giải Nhất tại Video Browser Showdown (VBS) 2025 và ba lần liên tiếp vô địch Ho Chi Minh AI Challenge.",
+    "CORE Lab là nhóm nghiên cứu về thị giác máy tính và truy hồi thông tin, thành lập năm 2025 tại Trường Đại học Công nghệ Thông tin, ĐHQG-HCM. Chúng tôi nghiên cứu truy hồi video tương tác đa phương thức, học biểu diễn thị giác–ngôn ngữ, hiểu văn bản trong ảnh và truy xuất theo nội dung ở quy mô lớn. Nhóm đạt giải Nhất tại Video Browser Showdown (VBS) 2025 và ba lần liên tiếp vô địch Ho Chi Minh AI Challenge.",
   footerNote_vi: "CORE Lab — Thị giác máy tính & Truy vấn Thông tin. Trường Đại học Công nghệ Thông tin, ĐHQG-HCM.",
   focus_vi: "Thị giác máy tính & Truy vấn Thông tin",
   affiliation_vi: "Trường Đại học Công nghệ Thông tin, ĐHQG-HCM",
