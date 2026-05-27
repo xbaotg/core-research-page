@@ -110,15 +110,20 @@ const members = [
   },
   {
     name: "Duy-Dinh Le",
-    title: "Assoc. Prof.",
+    title: "Dr.",
     // NOTE: placeholder role (ranked above the PI). Adjust to taste —
     // e.g. "Director", "Head of Lab", "Founding Director", "Scientific Director".
     role: "Lab Director · Computer Vision & Multimedia Retrieval",
     affiliation: UIT,
-    bio: "Senior faculty at UIT, VNU-HCM and director of CORE Lab; research spans computer vision, multimedia retrieval and large-scale video search, with long-standing collaboration with the National Institute of Informatics (NII), Japan.",
+    bio: "Dr. Duy-Dinh Le is a senior researcher at the University of Information Technology, VNU-HCM, working in computer vision, pattern recognition and multimedia retrieval. Through a long-standing collaboration with Prof. Shin'ichi Satoh at the National Institute of Informatics (NII), Japan, he co-developed the NII-UIT multimodal video search systems that compete at TRECVID and the Video Browser Showdown. At CORE Lab he oversees research in large-scale video search and multimodal understanding.",
     email: "duyld@uit.edu.vn",
     photo: "",
-    links: JSON.stringify({ scholar: "", homepage: "", github: "" }),
+    links: JSON.stringify({
+      scholar: "https://scholar.google.com/citations?user=6lbtgt4AAAAJ",
+      homepage: "",
+      github: "",
+      linkedin: "https://www.linkedin.com/in/ledduy/",
+    }),
     category: "faculty",
     order: -1,
   },
