@@ -7,7 +7,7 @@ export const dict = {
   en: {
     // nav
     navHome: "Home",
-    navPeople: "People",
+    navPeople: "Members",
     navPublications: "Publications",
     navConferences: "Conferences",
     navAwards: "Awards",
@@ -44,7 +44,7 @@ export const dict = {
     deadlinesEyebrow: "Deadlines",
     upcomingConferences: "Upcoming conferences",
     teamEyebrow: "The team",
-    peopleHeading: "People",
+    peopleHeading: "Members",
     newsEyebrow: "News",
     latest: "Latest",
     ctaHeading: "Interested in working with us?",
@@ -72,6 +72,14 @@ export const dict = {
     code: "Code",
     projectPage: "Project page",
     pubsEmpty: "No publications yet.",
+    pubSearch: "Search title or author…",
+    pubAllAuthors: "All authors",
+    pubAllVenues: "All venues",
+    pubClear: "Clear filters",
+    pubNoMatch: "No publications match your filters.",
+    pubCount: "publications",
+    pubPrev: "Prev",
+    pubNext: "Next",
 
     // publication detail
     allPublications: "← All publications",
@@ -137,6 +145,9 @@ export const dict = {
     contactEyebrow: "Contact",
     contactHeading: "Get in touch with the team.",
     contactSubtitle: "Questions, collaborations, or interested in joining CORE Lab? Send us a note.",
+    cPI: "Principal Investigator",
+    cPINote:
+      "For collaborations, student supervision, or dataset requests, reach out to the PI directly.",
     cEmail: "Email",
     cAffiliation: "Affiliation",
     cAddress: "Address",
@@ -216,6 +227,14 @@ export const dict = {
     code: "Mã nguồn",
     projectPage: "Trang dự án",
     pubsEmpty: "Chưa có công bố.",
+    pubSearch: "Tìm theo tiêu đề hoặc tác giả…",
+    pubAllAuthors: "Tất cả tác giả",
+    pubAllVenues: "Tất cả hội nghị",
+    pubClear: "Xoá bộ lọc",
+    pubNoMatch: "Không có công bố nào khớp bộ lọc.",
+    pubCount: "công bố",
+    pubPrev: "Trước",
+    pubNext: "Sau",
 
     allPublications: "← Tất cả công bố",
     abstract: "Tóm tắt",
@@ -276,6 +295,9 @@ export const dict = {
     contactEyebrow: "Liên hệ",
     contactHeading: "Liên hệ với đội ngũ.",
     contactSubtitle: "Có câu hỏi, muốn hợp tác, hay quan tâm gia nhập CORE Lab? Hãy gửi lời nhắn.",
+    cPI: "Chủ nhiệm nhóm nghiên cứu",
+    cPINote:
+      "Để hợp tác, hướng dẫn sinh viên hoặc yêu cầu bộ dữ liệu, hãy liên hệ trực tiếp với người phụ trách.",
     cEmail: "Email",
     cAffiliation: "Đơn vị",
     cAddress: "Địa chỉ",

@@ -221,19 +221,6 @@ const publications = [
     order: 1,
   },
   {
-    title: "Visual Question Answering for Interactive Multimodal Video Retrieval",
-    authors: "Bao Tran, Tien Do, Thanh Duc Ngo, Duy-Dinh Le",
-    venue: "MMM",
-    venueDetail: "MMM 2026 · 32nd International Conference on Multimedia Modeling",
-    year: 2026,
-    abstract: "",
-    pdfUrl: "",
-    codeUrl: "",
-    projectUrl: "",
-    featured: false,
-    order: 2,
-  },
-  {
     title:
       "NII-UIT at VBS2026: Towards Effective Visual Question Answering for Interactive and Multimodal Video Retrieval",
     authors: "Bao Tran, Tien Do, Thanh Duc Ngo, Duy-Dinh Le, Shin'ichi Satoh",

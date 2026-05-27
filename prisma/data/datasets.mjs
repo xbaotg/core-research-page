@@ -50,7 +50,7 @@ export const datasets = [
         texts: ["RESTORAN TAJUDDIN HUSSAIN", "ISTIMEWA TIAP-TIAP HARI", "NASI TOMATO DAN ROS AYAM", "KELUAR"],
       },
     ]),
-    driveUrl: "https://drive.google.com/drive/folders/1FXlwo0IHZ2IxxMcuYsyT-32ianL7xjyK?usp=sharing",
+    driveUrl: "",
     paperUrl: "https://doi.org/10.1109/ACCESS.2024.3395374",
     codeUrl: "https://github.com/aiclub-uit/SignboardText",
     featured: true,

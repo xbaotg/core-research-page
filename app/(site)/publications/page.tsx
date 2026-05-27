@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { getI18n } from "@/lib/i18n";
+import PublicationsBrowser from "@/components/PublicationsBrowser";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Publications" };
@@ -8,16 +8,22 @@ export const metadata = { title: "Publications" };
 export default async function PublicationsPage() {
   const [{ t }, pubs] = await Promise.all([
     getI18n(),
-    prisma.publication.findMany({ orderBy: [{ year: "desc" }, { order: "asc" }] }),
+    prisma.publication.findMany({
+      orderBy: [{ year: "desc" }, { order: "asc" }],
+      select: {
+        id: true,
+        title: true,
+        authors: true,
+        venue: true,
+        year: true,
+        slug: true,
+        abstract: true,
+        codeUrl: true,
+        projectUrl: true,
+        featured: true,
+      },
+    }),
   ]);
-
-  const byYear = new Map<string, typeof pubs>();
-  for (const p of pubs) {
-    const y = p.year ? String(p.year) : "Other";
-    if (!byYear.has(y)) byYear.set(y, []);
-    byYear.get(y)!.push(p);
-  }
-  const years = [...byYear.keys()];
 
   return (
     <>
@@ -29,66 +35,28 @@ export default async function PublicationsPage() {
         </div>
       </section>
 
-      <div className="container-core space-y-14 py-20">
-        {years.map((y) => (
-          <section key={y}>
-            <div className="mb-6 flex items-center gap-4">
-              <h2 className="font-display text-3xl text-ink">{y}</h2>
-              <span className="h-px flex-1 bg-hairline" />
-            </div>
-            <div className="space-y-4">
-              {byYear.get(y)!.map((p) => (
-                <article key={p.id} className="card-feature">
-                  <div className="flex flex-wrap items-center gap-2">
-                    {p.featured && <span className="badge badge-orange">{t.featured}</span>}
-                    {p.venue && (
-                      <span className="badge badge-cream">
-                        {p.venue}
-                        {p.year ? ` ${p.year}` : ""}
-                      </span>
-                    )}
-                  </div>
-                  <h3 className="mt-3 text-2xl font-medium leading-snug text-ink">
-                    {p.slug ? (
-                      <Link href={`/publications/${p.slug}`} className="hover:text-primary">
-                        {p.title}
-                      </Link>
-                    ) : (
-                      p.title
-                    )}
-                  </h3>
-                  <p className="mt-1 text-sm text-steel">{p.authors}</p>
-                  {p.abstract && (
-                    <p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate">{p.abstract}</p>
-                  )}
-                  <div className="mt-4 flex flex-wrap items-center gap-3 text-sm">
-                    {p.slug && (
-                      <Link className="btn btn-dark" href={`/publications/${p.slug}`}>
-                        {t.viewHighlights}
-                      </Link>
-                    )}
-                    {p.pdfUrl && (
-                      <a className="btn btn-secondary" href={p.pdfUrl} target="_blank" rel="noopener noreferrer">
-                        {t.pdf}
-                      </a>
-                    )}
-                    {p.codeUrl && (
-                      <a className="btn btn-secondary" href={p.codeUrl} target="_blank" rel="noopener noreferrer">
-                        {t.code}
-                      </a>
-                    )}
-                    {p.projectUrl && (
-                      <a className="btn btn-secondary" href={p.projectUrl} target="_blank" rel="noopener noreferrer">
-                        {t.projectPage}
-                      </a>
-                    )}
-                  </div>
-                </article>
-              ))}
-            </div>
-          </section>
-        ))}
-        {pubs.length === 0 && <p className="text-steel">{t.pubsEmpty}</p>}
+      <div className="container-core py-12 md:py-16">
+        {pubs.length === 0 ? (
+          <p className="text-steel">{t.pubsEmpty}</p>
+        ) : (
+          <PublicationsBrowser
+            pubs={pubs}
+            labels={{
+              search: t.pubSearch,
+              allAuthors: t.pubAllAuthors,
+              allVenues: t.pubAllVenues,
+              clear: t.pubClear,
+              noMatch: t.pubNoMatch,
+              count: t.pubCount,
+              prev: t.pubPrev,
+              next: t.pubNext,
+              view: t.viewHighlights,
+              code: t.code,
+              project: t.projectPage,
+              featured: t.featured,
+            }}
+          />
+        )}
       </div>
     </>
   );
