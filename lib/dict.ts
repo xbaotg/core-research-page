@@ -42,7 +42,7 @@ export const dict = {
     areasEyebrow: "What we work on",
     areasHeading: "Research areas",
     deadlinesEyebrow: "Deadlines",
-    upcomingConferences: "Upcoming conferences",
+    upcomingConferences: "Upcoming Conferences",
     teamEyebrow: "The team",
     peopleHeading: "Members",
     newsEyebrow: "News",
@@ -96,7 +96,7 @@ export const dict = {
 
     // conferences
     confEyebrow: "Deadlines & dates",
-    confHeading: "Upcoming conferences",
+    confHeading: "Upcoming Conferences",
     confSubtitle: "Live countdowns to the deadlines and dates CORE Lab is targeting.",
     nextDeadline: "Next deadline",
     nextConference: "Next conference",

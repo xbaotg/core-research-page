@@ -114,6 +114,28 @@ export default function HeroVisual() {
         <Label x={48} y={51} text="track · 2" color={COLORS.blue} delay="0.7s" />
         <Label x={238} y={131} text="scene-text" color={COLORS.orange} delay="0.95s" />
         <Label x={250} y={67} text="object 0.94" color={COLORS.pink} delay="1.2s" />
+
+        {/* post-scan output: retrieved matches with confidence bars */}
+        <g className="hv2-results">
+          <rect x="236" y="236" width="168" height="74" rx="6" fill="#0e1626" stroke="#ffffff" strokeOpacity="0.12" />
+          <text x="246" y="252" fontSize="8" fontWeight="700" letterSpacing="1.5" fill="#7f8ba0" fontFamily="monospace">
+            RETRIEVED
+          </text>
+          {[
+            { y: 269, c: COLORS.blue, label: "track", w: 64 },
+            { y: 285, c: COLORS.orange, label: "scene-text", w: 52 },
+            { y: 301, c: COLORS.pink, label: "object", w: 69 },
+          ].map((r) => (
+            <g key={r.label}>
+              <circle cx="248" cy={r.y - 3} r="3" fill={r.c} />
+              <text x="256" y={r.y} fontSize="9" fill="#cdd6e4" fontFamily="monospace">
+                {r.label}
+              </text>
+              <rect x="320" y={r.y - 5} width="74" height="5" rx="2" fill="#ffffff" opacity="0.09" />
+              <rect className="hv2-bar" x="320" y={r.y - 5} width={r.w} height="5" rx="2" fill={r.c} />
+            </g>
+          ))}
+        </g>
       </svg>
 
       {/* glowing scan sweep */}

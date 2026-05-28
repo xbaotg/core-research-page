@@ -8,11 +8,16 @@ export const dynamic = "force-dynamic";
 export const metadata = { title: "Contact" };
 
 export default async function ContactPage() {
-  const [{ locale, t }, settings, pi] = await Promise.all([
+  const [{ locale, t }, settings, contacts] = await Promise.all([
     getI18n(),
     getSettings(),
-    prisma.member.findFirst({
-      where: { role: { contains: "Principal Investigator" } },
+    prisma.member.findMany({
+      where: {
+        OR: [
+          { role: { contains: "Principal Investigator" } },
+          { role: { contains: "Co-advisor" } },
+        ],
+      },
       orderBy: { order: "asc" },
     }),
   ]);
@@ -28,30 +33,38 @@ export default async function ContactPage() {
 
       <div className="container-core grid gap-12 py-20 md:grid-cols-[0.8fr_1.2fr]">
         <div className="space-y-6">
-          {pi && (
-            <div className="card-cream">
-              <div className="flex items-center gap-4">
-                <div
-                  className="grid h-16 w-16 shrink-0 place-items-center overflow-hidden rounded-full bg-ink/10 font-display text-xl text-ink"
-                  style={pi.photo ? { background: `center/cover url(${asset(pi.photo)})` } : undefined}
-                >
-                  {!pi.photo && pi.name.charAt(0)}
-                </div>
-                <div className="min-w-0">
-                  <span className="badge badge-orange">{t.cPI}</span>
-                  <div className="mt-1.5 font-display text-xl leading-tight text-ink">
-                    {pi.title ? `${pi.title} ` : ""}
-                    {pi.name}
+          {contacts.length > 0 && (
+            <div className="space-y-4">
+              {contacts.map((m) => {
+                const isPI = m.role?.includes("Principal Investigator");
+                const tag = isPI ? t.cPI : m.role?.split("·")[0].trim() || t.cPI;
+                return (
+                  <div key={m.id} className="card-cream">
+                    <div className="flex items-center gap-4">
+                      <div
+                        className="grid h-16 w-16 shrink-0 place-items-center overflow-hidden rounded-full bg-ink/10 font-display text-xl text-ink"
+                        style={m.photo ? { background: `center/cover url(${asset(m.photo)})` } : undefined}
+                      >
+                        {!m.photo && m.name.charAt(0)}
+                      </div>
+                      <div className="min-w-0">
+                        <span className="badge badge-orange">{tag}</span>
+                        <div className="mt-1.5 font-display text-xl leading-tight text-ink">
+                          {m.title ? `${m.title} ` : ""}
+                          {m.name}
+                        </div>
+                        {m.role && <div className="text-sm text-steel">{m.role}</div>}
+                      </div>
+                    </div>
+                    {m.email && (
+                      <a href={`mailto:${m.email}`} className="btn btn-dark mt-4">
+                        {m.email}
+                      </a>
+                    )}
                   </div>
-                  {pi.role && <div className="text-sm text-steel">{pi.role}</div>}
-                </div>
-              </div>
-              <p className="mt-4 text-sm leading-relaxed text-slate">{t.cPINote}</p>
-              {pi.email && (
-                <a href={`mailto:${pi.email}`} className="btn btn-dark mt-4">
-                  {pi.email}
-                </a>
-              )}
+                );
+              })}
+              <p className="text-sm leading-relaxed text-slate">{t.cPINote}</p>
             </div>
           )}
           <div>

@@ -433,6 +433,19 @@ summary {
   mix-blend-mode: screen;
   animation: hv-scan 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
+.hv2-results {
+  opacity: 0;
+  animation: hv2-fade 0.6s ease forwards;
+  animation-delay: 1.5s;
+}
+.hv2-bar {
+  transform: scaleX(0);
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: hv2-grow 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation-delay: 1.7s;
+}
+@keyframes hv2-grow { to { transform: scaleX(1); } }
 
 /* Dataset gallery (DatasetGallery.tsx) */
 .ds-scan,
@@ -567,6 +580,8 @@ summary {
     animation: none;
   }
   .hv2-scan { display: none; }
+  .hv2-results { opacity: 1; animation: none; }
+  .hv2-bar { transform: none; animation: none; }
   html {
     scroll-behavior: auto;
   }
