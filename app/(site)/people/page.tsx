@@ -75,10 +75,10 @@ export default async function PeoplePage() {
                   {list.map((m) => (
                     <div
                       key={m.id}
-                      className="card-feature flex flex-col gap-5 shadow-layered ring-1 ring-hairline-strong sm:flex-row sm:items-start"
+                      className="card-feature flex flex-col gap-5 sm:flex-row sm:items-start"
                     >
                       <div
-                        className="grid h-24 w-24 shrink-0 place-items-center rounded-2xl font-display text-3xl text-on-primary"
+                        className="grid h-24 w-24 shrink-0 place-items-center overflow-hidden rounded-2xl font-display text-3xl text-on-primary"
                         style={{
                           background: m.photo
                             ? `center/cover url(${asset(m.photo)})`
@@ -88,11 +88,14 @@ export default async function PeoplePage() {
                         {!m.photo && m.name.charAt(0)}
                       </div>
                       <div className="min-w-0 flex-1">
-                        <div className="font-display text-2xl leading-tight text-ink">
+                        {m.role && (
+                          <span className="badge badge-cream">{m.role.split("·")[0].trim()}</span>
+                        )}
+                        <div className="mt-2 font-display text-2xl leading-tight text-ink">
                           {m.title ? `${m.title} ` : ""}
                           {m.name}
                         </div>
-                        {m.role && <div className="mt-0.5 text-sm font-medium text-steel">{m.role}</div>}
+                        {m.role && <div className="text-sm text-steel">{m.role}</div>}
                         {m.affiliation && <p className="mt-3 text-sm text-slate">{m.affiliation}</p>}
                         {m.bio && <p className="mt-2 text-sm leading-relaxed text-steel">{m.bio}</p>}
                         {m.email && (
