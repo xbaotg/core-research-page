@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, type CSSProperties } from "react";
 import { asset } from "@/lib/basePath";
 
-type Sample = { src: string; caption?: string; texts?: string[] };
+type Sample = { src: string; caption?: string; texts?: string[]; category?: string };
 
 export default function DatasetGallery({
   samples,
@@ -39,35 +39,60 @@ export default function DatasetGallery({
 
   const cur = open === null ? null : samples[open];
 
+  // Group consecutive samples by category (preserving the flat index used by the lightbox).
+  const hasCategories = samples.some((s) => s.category);
+  const groups: { category: string; items: { s: Sample; i: number }[] }[] = [];
+  samples.forEach((s, i) => {
+    const cat = s.category ?? "";
+    const last = groups[groups.length - 1];
+    if (!last || last.category !== cat) groups.push({ category: cat, items: [] });
+    groups[groups.length - 1].items.push({ s, i });
+  });
+
+  const tile = ({ s, i }: { s: Sample; i: number }) => (
+    <button
+      key={i}
+      onClick={() => setOpen(i)}
+      className="group relative block aspect-[4/3] overflow-hidden rounded-xl border border-hairline bg-ink/5 text-left"
+      aria-label={`Open sample ${i + 1}`}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={asset(s.src)}
+        alt={s.caption || `Sample ${i + 1}`}
+        loading="lazy"
+        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+      />
+      <span className="ds-scan pointer-events-none absolute inset-x-0 top-0 h-1/3 opacity-0 transition-opacity group-hover:opacity-100" />
+      <span className="absolute inset-x-0 bottom-0 flex items-center justify-between bg-gradient-to-t from-black/75 to-transparent px-3 pb-2.5 pt-8 text-xs font-medium text-white">
+        <span className="truncate">{s.caption?.split(" — ")[0]}</span>
+        {s.texts?.length ? (
+          <span className="shrink-0 rounded-full bg-white/20 px-2 py-0.5 backdrop-blur">
+            {s.texts.length} {labels.region}
+          </span>
+        ) : null}
+      </span>
+    </button>
+  );
+
   return (
     <>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {samples.map((s, i) => (
-          <button
-            key={i}
-            onClick={() => setOpen(i)}
-            className="group relative block aspect-[4/3] overflow-hidden rounded-xl border border-hairline bg-ink/5 text-left"
-            aria-label={`Open sample ${i + 1}`}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={asset(s.src)}
-              alt={s.caption || `Sample ${i + 1}`}
-              loading="lazy"
-              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-            <span className="ds-scan pointer-events-none absolute inset-x-0 top-0 h-1/3 opacity-0 transition-opacity group-hover:opacity-100" />
-            <span className="absolute inset-x-0 bottom-0 flex items-center justify-between bg-gradient-to-t from-black/75 to-transparent px-3 pb-2.5 pt-8 text-xs font-medium text-white">
-              <span className="truncate">{s.caption?.split(" — ")[0]}</span>
-              {s.texts?.length ? (
-                <span className="shrink-0 rounded-full bg-white/20 px-2 py-0.5 backdrop-blur">
-                  {s.texts.length} {labels.region}
-                </span>
-              ) : null}
-            </span>
-          </button>
-        ))}
-      </div>
+      {hasCategories ? (
+        <div className="space-y-10">
+          {groups.map((g, gi) => (
+            <div key={gi}>
+              {g.category && <div className="eyebrow mb-4">{g.category}</div>}
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                {g.items.map(tile)}
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {samples.map((s, i) => tile({ s, i }))}
+        </div>
+      )}
 
       {cur && (
         <div
