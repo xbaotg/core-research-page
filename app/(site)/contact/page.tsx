@@ -1,26 +1,34 @@
 import { getSettings } from "@/lib/data";
 import { getI18n, ls } from "@/lib/i18n";
-import { prisma } from "@/lib/prisma";
 import { asset } from "@/lib/basePath";
 import ContactForm from "@/components/ContactForm";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Contact" };
 
+// CORE Lab advisors — listed explicitly so the page always shows both,
+// independent of database/admin edits, with each email tied to its owner.
+const ADVISORS = [
+  {
+    name: "Thanh Duc Ngo",
+    title: "Dr.",
+    badge: "Principal Investigator",
+    role: "Principal Investigator · Computer Vision & Multimedia",
+    email: "thanhnd@uit.edu.vn",
+    photo: "/thanh-duc-ngo.png",
+  },
+  {
+    name: "Tien Do",
+    title: "MSc.",
+    badge: "Co-advisor",
+    role: "Co-advisor · Computer Vision & Retrieval",
+    email: "tiendv@uit.edu.vn",
+    photo: "/tien-do.png",
+  },
+];
+
 export default async function ContactPage() {
-  const [{ locale, t }, settings, contacts] = await Promise.all([
-    getI18n(),
-    getSettings(),
-    prisma.member.findMany({
-      where: {
-        OR: [
-          { role: { contains: "Principal Investigator" } },
-          { role: { contains: "Co-advisor" } },
-        ],
-      },
-      orderBy: { order: "asc" },
-    }),
-  ]);
+  const [{ locale, t }, settings] = await Promise.all([getI18n(), getSettings()]);
   return (
     <>
       <section className="hero-sunset">
@@ -33,42 +41,35 @@ export default async function ContactPage() {
 
       <div className="container-core grid gap-12 py-20 md:grid-cols-[0.8fr_1.2fr]">
         <div className="space-y-6">
-          {contacts.length > 0 && (
-            <div className="space-y-4">
-              {contacts.map((m) => {
-                const isPI = m.role?.includes("Principal Investigator");
-                const tag = isPI ? t.cPI : m.role?.split("·")[0].trim() || t.cPI;
-                return (
-                  <div key={m.id} className="card-cream">
-                    <div className="flex items-center gap-4">
-                      <div
-                        className="grid h-16 w-16 shrink-0 place-items-center overflow-hidden rounded-full bg-ink/10 font-display text-xl text-ink"
-                        style={m.photo ? { background: `center/cover url(${asset(m.photo)})` } : undefined}
-                      >
-                        {!m.photo && m.name.charAt(0)}
+          <div className="space-y-4">
+            {ADVISORS.map((a) => {
+              const tag = a.badge === "Principal Investigator" ? t.cPI : a.badge;
+              return (
+                <div key={a.name} className="card-cream">
+                  <div className="flex items-center gap-4">
+                    <div
+                      className="grid h-16 w-16 shrink-0 place-items-center overflow-hidden rounded-full bg-ink/10 font-display text-xl text-ink"
+                      style={{ background: `center/cover url(${asset(a.photo)})` }}
+                    />
+                    <div className="min-w-0">
+                      <span className="badge badge-orange">{tag}</span>
+                      <div className="mt-1.5 font-display text-xl leading-tight text-ink">
+                        {a.title ? `${a.title} ` : ""}
+                        {a.name}
                       </div>
-                      <div className="min-w-0">
-                        <span className="badge badge-orange">{tag}</span>
-                        <div className="mt-1.5 font-display text-xl leading-tight text-ink">
-                          {m.title ? `${m.title} ` : ""}
-                          {m.name}
-                        </div>
-                        {m.role && <div className="text-sm text-steel">{m.role}</div>}
-                      </div>
+                      <div className="text-sm text-steel">{a.role}</div>
                     </div>
-                    {m.email && (
-                      <a href={`mailto:${m.email}`} className="btn btn-dark mt-4">
-                        {m.email}
-                      </a>
-                    )}
                   </div>
-                );
-              })}
-              <p className="text-sm leading-relaxed text-slate">{t.cPINote}</p>
-            </div>
-          )}
+                  <a href={`mailto:${a.email}`} className="btn btn-dark mt-4">
+                    {a.email}
+                  </a>
+                </div>
+              );
+            })}
+            <p className="text-sm leading-relaxed text-slate">{t.cPINote}</p>
+          </div>
           <div>
-            <div className="eyebrow mb-1">{t.cEmail}</div>
+            <div className="eyebrow mb-1">{locale === "vi" ? "Email chung" : "Lab email"}</div>
             <a href={`mailto:${settings.email}`} className="text-link hover:underline">
               {settings.email}
             </a>
