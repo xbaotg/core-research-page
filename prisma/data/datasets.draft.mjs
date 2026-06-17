@@ -3,5 +3,5 @@
 // Preview with: node prisma/seed-draft.mjs (upserts into the local DB).
 // To publish: move the reviewed entry into ./datasets.mjs and run ensure-datasets.
 //
-// 2026-06-15: ATTW promoted to ./datasets.mjs (published). Empty for now.
+// 2026-06-15: ATTW + ViCalligraphy promoted to ./datasets.mjs (published).
 export const draftDatasets = [];

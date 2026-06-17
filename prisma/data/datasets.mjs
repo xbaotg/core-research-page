@@ -17,6 +17,12 @@ const attwSample = (cat, n, text) => ({
   category: ATTW_CAT[cat],
 });
 
+const viCalliSample = (n, text) => ({
+  src: `/datasets/vicalligraphy/${n}.jpg`,
+  caption: text,
+  texts: [text],
+});
+
 export const datasets = [
   {
     name: "SignboardText",
@@ -138,5 +144,39 @@ export const datasets = [
     codeUrl: "https://github.com/aiclub-uit/Skeleton-Guided-Artistic-Text-Recognition",
     featured: true,
     order: 1,
+  },
+  {
+    name: "ViCalligraphy",
+    slug: "vicalligraphy",
+    tagline: "Vietnamese calligraphy (thư pháp) word recognition",
+    description:
+      "ViCalligraphy is a word-level recognition dataset of Vietnamese calligraphy (thư pháp) — brush-written, highly stylized glyphs with flowing strokes, ligatures and ornamental flourishes that depart sharply from printed or everyday handwritten fonts. It contains 15,541 cropped word images (12,432 train / 3,109 test), each annotated with its Vietnamese transcription including full diacritics. The dataset targets a domain underserved by existing scene-text and handwriting benchmarks, where artistic brush strokes and cursive connections make character boundaries ambiguous. The samples below are a small preview, and the full dataset is available on request.",
+    modality: "Image + Text",
+    task: "Text recognition (calligraphy)",
+    year: 2024,
+    license:
+      "Research & educational use only — citation required; full data available on request.",
+    stats: JSON.stringify([
+      { label: "Word crops", value: "15,541" },
+      { label: "Train / Test", value: "12,432 / 3,109" },
+      { label: "Annotation", value: "Word-level" },
+      { label: "Language", value: "Vietnamese" },
+    ]),
+    samples: JSON.stringify([
+      viCalliSample(1, "Gia"),
+      viCalliSample(2, "sinh"),
+      viCalliSample(3, "hưng"),
+      viCalliSample(4, "lặng"),
+      viCalliSample(5, "trà"),
+      viCalliSample(6, "Năm"),
+      viCalliSample(7, "ơn"),
+      viCalliSample(8, "bất"),
+      viCalliSample(9, "nhược"),
+    ]),
+    driveUrl: "",
+    paperUrl: "",
+    codeUrl: "",
+    featured: false,
+    order: 2,
   },
 ];
