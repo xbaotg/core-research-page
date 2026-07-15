@@ -9,7 +9,8 @@
     "lint": "eslint",
     "seed": "node prisma/seed.mjs",
     "db:datasets": "node prisma/ensure-datasets.mjs",
-    "db:deploy": "prisma migrate deploy && node prisma/ensure-datasets.mjs",
+    "db:publications": "node prisma/ensure-publications.mjs",
+    "db:deploy": "prisma migrate deploy && node prisma/ensure-datasets.mjs && node prisma/ensure-publications.mjs",
     "db:reset": "prisma migrate reset --force && node prisma/seed.mjs"
   },
   "dependencies": {
